@@ -1,9 +1,12 @@
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
+import Certificate from '../components/Certificate';
 import '../styles/Results.css';
 
 const Results = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const { user } = useAuth();
   const { score, totalQuestions, category, difficulty } = location.state || {};
 
   if (!score && score !== 0) {
@@ -21,6 +24,7 @@ const Results = () => {
   };
 
   const performance = getPerformanceMessage();
+  const isPassing = percentage >= 50;
 
   return (
     <div className="results-container">
@@ -53,6 +57,17 @@ const Results = () => {
           </button>
         </div>
       </div>
+
+      {isPassing && (
+        <Certificate
+          username={user?.username || 'User'}
+          category={category}
+          difficulty={difficulty}
+          score={score}
+          totalQuestions={totalQuestions}
+          date={new Date().toISOString()}
+        />
+      )}
     </div>
   );
 };
