@@ -44,18 +44,61 @@ export const getQuizById = async (req, res) => {
 // Create new quiz (Admin only)
 export const createQuiz = async (req, res) => {
   try {
-    const { category, difficulty, question, options, correctAnswer } = req.body;
+    const { questions } = req.body;
 
-    const quiz = await Quiz.create({
-      category,
-      difficulty,
-      question,
-      options,
-      correctAnswer,
-      createdBy: req.user._id
-    });
+    // Handle both single question and multiple questions format
+    let quizzesToCreate;
+    
+    if (Array.isArray(questions)) {
+      // Multiple questions format
+      if (questions.length === 0) {
+        return res.status(400).json({ message: 'At least one question is required' });
+      }
 
-    res.status(201).json(quiz);
+      // Validate each question has required fields
+      for (let i = 0; i < questions.length; i++) {
+        const q = questions[i];
+        if (!q.category || !q.difficulty || !q.question || !q.options || q.correctAnswer === undefined) {
+          return res.status(400).json({ 
+            message: `Question ${i + 1} is missing required fields` 
+          });
+        }
+        if (!Array.isArray(q.options) || q.options.length !== 4) {
+          return res.status(400).json({ 
+            message: `Question ${i + 1} must have exactly 4 options` 
+          });
+        }
+        if (q.correctAnswer < 0 || q.correctAnswer > 3) {
+          return res.status(400).json({ 
+            message: `Question ${i + 1} has invalid correct answer index` 
+          });
+        }
+      }
+
+      quizzesToCreate = questions.map(q => ({
+        category: q.category,
+        difficulty: q.difficulty,
+        question: q.question,
+        options: q.options,
+        correctAnswer: q.correctAnswer,
+        createdBy: req.user._id
+      }));
+    } else {
+      // Single question format (backward compatibility)
+      const { category, difficulty, question, options, correctAnswer } = req.body;
+      quizzesToCreate = [{
+        category,
+        difficulty,
+        question,
+        options,
+        correctAnswer,
+        createdBy: req.user._id
+      }];
+    }
+
+    const createdQuizzes = await Quiz.insertMany(quizzesToCreate);
+
+    res.status(201).json(createdQuizzes);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
