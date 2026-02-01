@@ -44,18 +44,37 @@ export const getQuizById = async (req, res) => {
 // Create new quiz (Admin only)
 export const createQuiz = async (req, res) => {
   try {
-    const { category, difficulty, question, options, correctAnswer } = req.body;
+    const { questions } = req.body;
 
-    const quiz = await Quiz.create({
-      category,
-      difficulty,
-      question,
-      options,
-      correctAnswer,
-      createdBy: req.user._id
-    });
+    // Handle both single question and multiple questions format
+    let quizzesToCreate;
+    
+    if (Array.isArray(questions)) {
+      // Multiple questions format
+      quizzesToCreate = questions.map(q => ({
+        category: q.category,
+        difficulty: q.difficulty,
+        question: q.question,
+        options: q.options,
+        correctAnswer: q.correctAnswer,
+        createdBy: req.user._id
+      }));
+    } else {
+      // Single question format (backward compatibility)
+      const { category, difficulty, question, options, correctAnswer } = req.body;
+      quizzesToCreate = [{
+        category,
+        difficulty,
+        question,
+        options,
+        correctAnswer,
+        createdBy: req.user._id
+      }];
+    }
 
-    res.status(201).json(quiz);
+    const createdQuizzes = await Quiz.insertMany(quizzesToCreate);
+
+    res.status(201).json(createdQuizzes);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

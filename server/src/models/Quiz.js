@@ -3,8 +3,7 @@ import mongoose from 'mongoose';
 const quizSchema = new mongoose.Schema({
   category: {
     type: String,
-    required: true,
-    enum: ['React', 'MongoDB', 'Express', 'CSS', 'HTML', 'JavaScript', 'Node.js', 'Java', 'Python']
+    required: true
   },
   difficulty: {
     type: String,
