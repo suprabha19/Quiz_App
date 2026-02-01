@@ -51,6 +51,30 @@ export const createQuiz = async (req, res) => {
     
     if (Array.isArray(questions)) {
       // Multiple questions format
+      if (questions.length === 0) {
+        return res.status(400).json({ message: 'At least one question is required' });
+      }
+
+      // Validate each question has required fields
+      for (let i = 0; i < questions.length; i++) {
+        const q = questions[i];
+        if (!q.category || !q.difficulty || !q.question || !q.options || q.correctAnswer === undefined) {
+          return res.status(400).json({ 
+            message: `Question ${i + 1} is missing required fields` 
+          });
+        }
+        if (!Array.isArray(q.options) || q.options.length !== 4) {
+          return res.status(400).json({ 
+            message: `Question ${i + 1} must have exactly 4 options` 
+          });
+        }
+        if (q.correctAnswer < 0 || q.correctAnswer > 3) {
+          return res.status(400).json({ 
+            message: `Question ${i + 1} has invalid correct answer index` 
+          });
+        }
+      }
+
       quizzesToCreate = questions.map(q => ({
         category: q.category,
         difficulty: q.difficulty,

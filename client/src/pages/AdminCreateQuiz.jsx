@@ -75,8 +75,6 @@ const AdminCreateQuiz = () => {
     if (questions.length > 1) {
       const newQuestions = questions.filter((_, index) => index !== questionIndex);
       setQuestions(newQuestions);
-    } else {
-      setError('At least one question is required');
     }
   };
 
