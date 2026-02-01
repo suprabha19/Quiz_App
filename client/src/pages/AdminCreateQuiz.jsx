@@ -19,7 +19,7 @@ const AdminCreateQuiz = () => {
   const navigate = useNavigate();
 
   const difficulties = ['Basic', 'Intermediate', 'Hard'];
-  const predefinedCategories = ['General Knowledge', 'Science', 'History', 'Sports', 'Technology'];
+  const predefinedCategories = ['React', 'MongoDB', 'Express', 'CSS', 'HTML', 'JavaScript', 'Node.js', 'Java', 'Python'];
 
   useEffect(() => {
     fetchCategories();

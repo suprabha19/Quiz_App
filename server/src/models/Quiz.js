@@ -4,7 +4,7 @@ const quizSchema = new mongoose.Schema({
   category: {
     type: String,
     required: true,
-    enum: ['General Knowledge', 'Science', 'History', 'Sports', 'Technology']
+    enum: ['React', 'MongoDB', 'Express', 'CSS', 'HTML', 'JavaScript', 'Node.js', 'Java', 'Python']
   },
   difficulty: {
     type: String,

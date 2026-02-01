@@ -19,7 +19,7 @@ const AdminEditQuiz = () => {
   const { id } = useParams();
 
   const difficulties = ['Basic', 'Intermediate', 'Hard'];
-  const predefinedCategories = ['General Knowledge', 'Science', 'History', 'Sports', 'Technology'];
+  const predefinedCategories = ['React', 'MongoDB', 'Express', 'CSS', 'HTML', 'JavaScript', 'Node.js', 'Java', 'Python'];
 
   useEffect(() => {
     fetchQuiz();
