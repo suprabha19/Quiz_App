@@ -1,0 +1,137 @@
+.dashboard-container {
+  display: flex;
+  min-height: 100vh;
+}
+
+.main-content {
+  flex: 1;
+  padding: 40px;
+  background: rgba(255, 255, 255, 0.95);
+  margin: 20px;
+  border-radius: 16px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
+}
+
+.dashboard-header h1 {
+  color: #333;
+  font-size: 2rem;
+}
+
+.btn-admin {
+  background: #ff6b6b;
+  color: white;
+  font-weight: 600;
+  padding: 12px 24px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-admin:hover {
+  background: #ee5a52;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+}
+
+.quiz-selection {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+}
+
+.quiz-selection h2 {
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.instruction {
+  text-align: center;
+  padding: 40px;
+  color: #666;
+  font-size: 1.2rem;
+}
+
+.selected-category {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 20px;
+  border-radius: 12px;
+  margin-bottom: 30px;
+}
+
+.selected-category h3 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.difficulty-selection h3 {
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.difficulty-buttons {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.btn-difficulty {
+  flex: 1;
+  min-width: 150px;
+  padding: 20px;
+  background: #f8f9fa;
+  border: 3px solid #e0e0e0;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #666;
+  transition: all 0.3s ease;
+}
+
+.btn-difficulty:hover {
+  border-color: #667eea;
+  background: #f0f4ff;
+  transform: translateY(-2px);
+}
+
+.btn-difficulty.active {
+  background: #667eea;
+  border-color: #667eea;
+  color: white;
+  box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+}
+
+.quiz-info {
+  margin-top: 30px;
+  text-align: center;
+}
+
+.quiz-count {
+  font-size: 1.2rem;
+  color: #666;
+  margin-bottom: 20px;
+}
+
+.btn-start-quiz {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  font-size: 1.2rem;
+  padding: 15px 40px;
+  border-radius: 12px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-start-quiz:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+}
