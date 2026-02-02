@@ -20,8 +20,13 @@ const AdminDashboard = () => {
   useEffect(() => {
     fetchQuizzes();
     fetchCategories();
-    fetchUsers();
   }, []);
+
+  useEffect(() => {
+    if (activeTab === 'users' && users.length === 0) {
+      fetchUsers();
+    }
+  }, [activeTab]);
 
   useEffect(() => {
     filterQuizzes();
