@@ -26,6 +26,35 @@
   flex-wrap: wrap;
 }
 
+/* Admin Tabs */
+.admin-tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 30px;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+.tab-button {
+  padding: 12px 24px;
+  background: transparent;
+  border: none;
+  border-bottom: 3px solid transparent;
+  color: #666;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 1rem;
+}
+
+.tab-button:hover {
+  color: #667eea;
+}
+
+.tab-button.active {
+  color: #667eea;
+  border-bottom-color: #667eea;
+}
+
 .btn-create {
   background: #28a745;
   color: white;
@@ -108,7 +137,7 @@
 }
 
 /* Quizzes Table */
-.quizzes-table {
+.quizzes-table, .users-table {
   background: white;
   padding: 30px;
   border-radius: 12px;
@@ -116,12 +145,12 @@
   overflow-x: auto;
 }
 
-.quizzes-table h2 {
+.quizzes-table h2, .users-table h2 {
   color: #333;
   margin-bottom: 20px;
 }
 
-.no-quizzes {
+.no-quizzes, .no-users {
   text-align: center;
   padding: 40px;
   color: #999;
@@ -201,6 +230,16 @@ td {
 .badge-hard {
   background: #f8d7da;
   color: #721c24;
+}
+
+.badge-admin {
+  background: #d6d8ff;
+  color: #4b50d6;
+}
+
+.badge-user {
+  background: #d4edda;
+  color: #155724;
 }
 
 .actions-cell {

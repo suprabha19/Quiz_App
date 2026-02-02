@@ -28,7 +28,8 @@ api.interceptors.request.use(
 export const authAPI = {
   register: (username, password) => api.post('/auth/register', { username, password }),
   login: (username, password) => api.post('/auth/login', { username, password }),
-  getProfile: () => api.get('/auth/profile')
+  getProfile: () => api.get('/auth/profile'),
+  getAllUsers: () => api.get('/auth/users')
 };
 
 // Quiz API calls
