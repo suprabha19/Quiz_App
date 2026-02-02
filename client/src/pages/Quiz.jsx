@@ -10,6 +10,7 @@ const Quiz = () => {
   const [answers, setAnswers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [showFeedback, setShowFeedback] = useState(false);
   
   const location = useLocation();
   const navigate = useNavigate();
@@ -41,7 +42,9 @@ const Quiz = () => {
   };
 
   const handleAnswerSelect = (answerIndex) => {
+    if (showFeedback) return; // Prevent changing answer after feedback is shown
     setSelectedAnswer(answerIndex);
+    setShowFeedback(true);
   };
 
   const handleNext = () => {
@@ -62,6 +65,7 @@ const Quiz = () => {
     if (currentQuestionIndex < questions.length - 1) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
       setSelectedAnswer(null);
+      setShowFeedback(false);
     } else {
       submitQuiz();
     }
@@ -133,17 +137,35 @@ const Quiz = () => {
         <h3 className="question-text">{currentQuestion.question}</h3>
         
         <div className="options-list">
-          {currentQuestion.options.map((option, index) => (
-            <button
-              key={index}
-              className={`option-button ${selectedAnswer === index ? 'selected' : ''}`}
-              onClick={() => handleAnswerSelect(index)}
-            >
-              <span className="option-letter">{String.fromCharCode(65 + index)}</span>
-              <span className="option-text">{option}</span>
-            </button>
-          ))}
+          {currentQuestion.options.map((option, index) => {
+            const isSelected = selectedAnswer === index;
+            const isCorrect = index === currentQuestion.correctAnswer;
+            const showCorrect = showFeedback && isCorrect;
+            const showIncorrect = showFeedback && isSelected && !isCorrect;
+            
+            return (
+              <button
+                key={index}
+                className={`option-button ${isSelected ? 'selected' : ''} ${showCorrect ? 'correct' : ''} ${showIncorrect ? 'incorrect' : ''}`}
+                onClick={() => handleAnswerSelect(index)}
+                disabled={showFeedback}
+              >
+                <span className="option-letter">{String.fromCharCode(65 + index)}</span>
+                <span className="option-text">{option}</span>
+                {showCorrect && <span className="feedback-icon">✓</span>}
+                {showIncorrect && <span className="feedback-icon">✗</span>}
+              </button>
+            );
+          })}
         </div>
+
+        {showFeedback && (
+          <div className={`feedback-message ${selectedAnswer === currentQuestion.correctAnswer ? 'correct-feedback' : 'incorrect-feedback'}`}>
+            {selectedAnswer === currentQuestion.correctAnswer 
+              ? '✓ Correct! Well done!' 
+              : `✗ Incorrect. The correct answer is ${String.fromCharCode(65 + currentQuestion.correctAnswer)}.`}
+          </div>
+        )}
 
         <div className="quiz-actions">
           <button 
