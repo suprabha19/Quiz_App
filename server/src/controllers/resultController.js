@@ -47,6 +47,39 @@ export const getAllResults = async (req, res) => {
   }
 };
 
+// Get leaderboard (top 10 users by best percentage score)
+export const getLeaderboard = async (req, res) => {
+  try {
+    const results = await Result.find({}).populate('user', 'username');
+
+    // Aggregate best score per user
+    const userBestMap = {};
+    for (const result of results) {
+      if (!result.user) continue;
+      const uid = result.user._id.toString();
+      const percentage = (result.score / result.totalQuestions) * 100;
+      if (!userBestMap[uid] || percentage > userBestMap[uid].bestPercentage) {
+        userBestMap[uid] = {
+          username: result.user.username,
+          bestPercentage: Math.round(percentage),
+          category: result.category,
+          difficulty: result.difficulty,
+          score: result.score,
+          totalQuestions: result.totalQuestions
+        };
+      }
+    }
+
+    const leaderboard = Object.values(userBestMap)
+      .sort((a, b) => b.bestPercentage - a.bestPercentage)
+      .slice(0, 10);
+
+    res.json(leaderboard);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 // Get result by ID
 export const getResultById = async (req, res) => {
   try {

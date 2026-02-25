@@ -5,6 +5,8 @@ import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import Quiz from './pages/Quiz';
 import Results from './pages/Results';
+import QuizHistory from './pages/QuizHistory';
+import Leaderboard from './pages/Leaderboard';
 import AdminDashboard from './pages/AdminDashboard';
 import AdminCreateQuiz from './pages/AdminCreateQuiz';
 import AdminEditQuiz from './pages/AdminEditQuiz';
@@ -56,6 +58,22 @@ function AppRoutes() {
         element={
           <ProtectedRoute>
             <Results />
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path="/history" 
+        element={
+          <ProtectedRoute>
+            <QuizHistory />
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path="/leaderboard" 
+        element={
+          <ProtectedRoute>
+            <Leaderboard />
           </ProtectedRoute>
         } 
       />

@@ -1,7 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { quizAPI, resultAPI } from '../services/api';
 import '../styles/Quiz.css';
+
+const QUESTION_TIME = 30;
 
 const Quiz = () => {
   const [questions, setQuestions] = useState([]);
@@ -11,6 +13,8 @@ const Quiz = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [showFeedback, setShowFeedback] = useState(false);
+  const [timeLeft, setTimeLeft] = useState(QUESTION_TIME);
+  const timerRef = useRef(null);
   
   const location = useLocation();
   const navigate = useNavigate();
@@ -23,6 +27,31 @@ const Quiz = () => {
     }
     fetchQuestions();
   }, [category, difficulty]);
+
+  // Start/reset timer when question changes (and questions are loaded)
+  useEffect(() => {
+    if (loading || showFeedback) return;
+    setTimeLeft(QUESTION_TIME);
+    clearInterval(timerRef.current);
+    timerRef.current = setInterval(() => {
+      setTimeLeft((prev) => {
+        if (prev <= 1) {
+          clearInterval(timerRef.current);
+          setShowFeedback(true);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+    return () => clearInterval(timerRef.current);
+  }, [currentQuestionIndex, loading]);
+
+  // Stop timer once feedback is shown
+  useEffect(() => {
+    if (showFeedback) {
+      clearInterval(timerRef.current);
+    }
+  }, [showFeedback]);
 
   const fetchQuestions = async () => {
     try {
@@ -48,36 +77,30 @@ const Quiz = () => {
   };
 
   const handleNext = () => {
-    if (selectedAnswer === null) {
-      alert('Please select an answer');
-      return;
-    }
-
     const currentQuestion = questions[currentQuestionIndex];
-    const isCorrect = selectedAnswer === currentQuestion.correctAnswer;
 
-    setAnswers([...answers, {
+    // If no answer selected (e.g. time ran out), treat as incorrect
+    const answeredIndex = selectedAnswer;
+    const isCorrect = answeredIndex !== null && answeredIndex === currentQuestion.correctAnswer;
+
+    const updatedAnswers = [...answers, {
       questionId: currentQuestion._id,
-      selectedAnswer,
+      selectedAnswer: answeredIndex,
       isCorrect
-    }]);
+    }];
+
+    setAnswers(updatedAnswers);
 
     if (currentQuestionIndex < questions.length - 1) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
       setSelectedAnswer(null);
       setShowFeedback(false);
     } else {
-      submitQuiz();
+      submitQuiz(updatedAnswers);
     }
   };
 
-  const submitQuiz = async () => {
-    const finalAnswers = [...answers, {
-      questionId: questions[currentQuestionIndex]._id,
-      selectedAnswer,
-      isCorrect: selectedAnswer === questions[currentQuestionIndex].correctAnswer
-    }];
-
+  const submitQuiz = async (finalAnswers) => {
     const score = finalAnswers.filter(a => a.isCorrect).length;
 
     try {
@@ -124,7 +147,12 @@ const Quiz = () => {
   return (
     <div className="quiz-container">
       <div className="quiz-header">
-        <h2>{category} - {difficulty}</h2>
+        <div className="quiz-header-top">
+          <h2>{category} - {difficulty}</h2>
+          <div className={`quiz-timer ${timeLeft <= 10 ? 'timer-warning' : ''}`}>
+            ⏱ {timeLeft}s
+          </div>
+        </div>
         <div className="quiz-progress">
           <div className="progress-bar">
             <div className="progress-fill" style={{ width: `${progress}%` }}></div>
@@ -161,9 +189,11 @@ const Quiz = () => {
 
         {showFeedback && (
           <div className={`feedback-message ${selectedAnswer === currentQuestion.correctAnswer ? 'correct-feedback' : 'incorrect-feedback'}`}>
-            {selectedAnswer === currentQuestion.correctAnswer 
-              ? '✓ Correct! Well done!' 
-              : `✗ Incorrect. The correct answer is ${String.fromCharCode(65 + currentQuestion.correctAnswer)}.`}
+            {selectedAnswer === null
+              ? `⏱ Time's up! The correct answer is ${String.fromCharCode(65 + currentQuestion.correctAnswer)}.`
+              : selectedAnswer === currentQuestion.correctAnswer 
+                ? '✓ Correct! Well done!' 
+                : `✗ Incorrect. The correct answer is ${String.fromCharCode(65 + currentQuestion.correctAnswer)}.`}
           </div>
         )}
 
