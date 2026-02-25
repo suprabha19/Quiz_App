@@ -89,3 +89,32 @@ export const getAllUsers = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+// Update user role (Admin only)
+export const updateUserRole = async (req, res) => {
+  try {
+    const { role } = req.body;
+
+    if (!['user', 'admin'].includes(role)) {
+      return res.status(400).json({ message: 'Role must be "user" or "admin"' });
+    }
+
+    // Prevent an admin from demoting themselves
+    if (req.params.id === req.user._id.toString()) {
+      return res.status(400).json({ message: 'You cannot change your own role' });
+    }
+
+    const user = await User.findById(req.params.id).select('-password');
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    user.role = role;
+    await user.save();
+
+    res.json({ _id: user._id, username: user.username, role: user.role, createdAt: user.createdAt });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};

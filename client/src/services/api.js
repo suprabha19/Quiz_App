@@ -29,7 +29,8 @@ export const authAPI = {
   register: (username, password) => api.post('/auth/register', { username, password }),
   login: (username, password) => api.post('/auth/login', { username, password }),
   getProfile: () => api.get('/auth/profile'),
-  getAllUsers: () => api.get('/auth/users')
+  getAllUsers: () => api.get('/auth/users'),
+  updateUserRole: (id, role) => api.put(`/auth/users/${id}/role`, { role })
 };
 
 // Quiz API calls
