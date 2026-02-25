@@ -1,0 +1,187 @@
+.analytics-empty {
+  text-align: center;
+  padding: 60px 20px;
+  color: #666;
+  font-size: 1.2rem;
+}
+
+.analytics-empty p {
+  margin-bottom: 24px;
+}
+
+/* Overview stats */
+.analytics-overview {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 30px;
+}
+
+.analytics-stat-card {
+  flex: 1;
+  min-width: 140px;
+  background: white;
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.07);
+  text-align: center;
+}
+
+.analytics-stat-number {
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: #667eea;
+  margin-bottom: 6px;
+}
+
+.analytics-stat-number.score-excellent { color: #28a745; }
+.analytics-stat-number.score-great     { color: #17a2b8; }
+.analytics-stat-number.score-good      { color: #ffc107; }
+.analytics-stat-number.score-poor      { color: #dc3545; }
+
+.analytics-stat-label {
+  font-size: 0.9rem;
+  color: #888;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Section */
+.analytics-section {
+  background: white;
+  border-radius: 14px;
+  padding: 28px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.07);
+  margin-bottom: 24px;
+}
+
+.analytics-section h2 {
+  color: #333;
+  margin-bottom: 8px;
+  font-size: 1.3rem;
+}
+
+.analytics-hint {
+  font-size: 0.85rem;
+  color: #888;
+  margin-bottom: 20px;
+}
+
+/* Table */
+.analytics-table-wrapper {
+  overflow-x: auto;
+}
+
+.analytics-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+.analytics-table th {
+  background: #f8f9fa;
+  padding: 12px 16px;
+  text-align: left;
+  font-weight: 700;
+  color: #555;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+.analytics-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #f0f0f0;
+  vertical-align: middle;
+}
+
+.analytics-table tr:hover td {
+  background: #fafafa;
+}
+
+.analytics-category {
+  font-weight: 700;
+  color: #333;
+}
+
+/* Score bar */
+.score-bar-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.score-bar {
+  height: 10px;
+  border-radius: 5px;
+  background: #667eea;
+  min-width: 4px;
+  transition: width 0.3s ease;
+}
+
+.score-bar.score-excellent { background: #28a745; }
+.score-bar.score-great     { background: #17a2b8; }
+.score-bar.score-good      { background: #ffc107; }
+.score-bar.score-poor      { background: #dc3545; }
+
+.score-bar-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #555;
+  white-space: nowrap;
+}
+
+.score-excellent { color: #28a745; font-weight: 700; }
+.score-great     { color: #17a2b8; font-weight: 700; }
+.score-good      { color: #856404; font-weight: 700; }
+.score-poor      { color: #dc3545; font-weight: 700; }
+
+/* Status badges */
+.status-badge {
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.status-strong    { background: #d4edda; color: #155724; }
+.status-improving { background: #fff3cd; color: #856404; }
+.status-weak      { background: #f8d7da; color: #721c24; }
+
+/* Difficulty cards */
+.diff-cards {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.diff-card {
+  flex: 1;
+  min-width: 140px;
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+  border: 2px solid transparent;
+}
+
+.diff-basic        { background: #d4edda; border-color: #28a745; }
+.diff-intermediate { background: #fff3cd; border-color: #ffc107; }
+.diff-hard         { background: #f8d7da; border-color: #dc3545; }
+
+.diff-name {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 6px;
+}
+
+.diff-score {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #333;
+  margin-bottom: 4px;
+}
+
+.diff-attempts {
+  font-size: 0.85rem;
+  color: #666;
+}

@@ -4,6 +4,55 @@
   gap: 16px;
 }
 
+/* Achievements section */
+.history-badges-section {
+  background: linear-gradient(135deg, #fff9c4, #fffde7);
+  border: 2px solid #ffc107;
+  border-radius: 14px;
+  padding: 24px;
+  margin-bottom: 30px;
+}
+
+.history-badges-section h2 {
+  color: #856404;
+  margin-bottom: 16px;
+  font-size: 1.3rem;
+}
+
+.history-badges-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.history-badge-card {
+  background: white;
+  border: 2px solid #ffc107;
+  border-radius: 10px;
+  padding: 12px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  min-width: 110px;
+  text-align: center;
+}
+
+.hb-icon {
+  font-size: 2rem;
+}
+
+.hb-label {
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: #333;
+}
+
+.hb-desc {
+  font-size: 0.73rem;
+  color: #666;
+}
+
 .history-empty {
   text-align: center;
   padding: 60px 20px;

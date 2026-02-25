@@ -37,6 +37,9 @@ const Sidebar = ({ categories, selectedCategory, setSelectedCategory }) => {
         <button className="sidebar-nav-item" onClick={() => navigate('/history')}>
           📋 My History
         </button>
+        <button className="sidebar-nav-item" onClick={() => navigate('/analytics')}>
+          📊 Analytics
+        </button>
         <button className="sidebar-nav-item" onClick={() => navigate('/leaderboard')}>
           🏆 Leaderboard
         </button>

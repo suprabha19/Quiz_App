@@ -1,25 +1,36 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { resultAPI } from '../services/api';
+import { resultAPI, authAPI } from '../services/api';
 import Sidebar from '../components/Sidebar';
 import { quizAPI } from '../services/api';
 import '../styles/QuizHistory.css';
+
+const BADGE_INFO = {
+  first_quiz:       { icon: '🎯', label: 'First Quiz',       desc: 'Completed your first quiz' },
+  perfect_score:    { icon: '💯', label: 'Perfect Score',    desc: 'Got 100% on a quiz' },
+  top_scorer:       { icon: '⭐', label: 'Star Performer',   desc: 'Scored 90%+ on a quiz' },
+  quiz_veteran:     { icon: '🏆', label: 'Quiz Veteran',     desc: 'Completed 10 quizzes' },
+  knowledge_seeker: { icon: '🌟', label: 'Knowledge Seeker', desc: 'Explored 3+ categories' }
+};
 
 const QuizHistory = () => {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(true);
   const [categories, setCategories] = useState([]);
+  const [badges, setBadges] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [resultsRes, categoriesRes] = await Promise.all([
+        const [resultsRes, categoriesRes, profileRes] = await Promise.all([
           resultAPI.getUserResults(),
-          quizAPI.getCategories()
+          quizAPI.getCategories(),
+          authAPI.getProfile()
         ]);
         setResults(resultsRes.data);
         setCategories(categoriesRes.data);
+        setBadges(profileRes.data.badges || []);
       } catch (error) {
         console.error('Error fetching history:', error);
       } finally {
@@ -66,6 +77,21 @@ const QuizHistory = () => {
           </button>
         </div>
 
+        {badges.length > 0 && (
+          <div className="history-badges-section">
+            <h2>🏅 My Achievements</h2>
+            <div className="history-badges-grid">
+              {badges.map(badge => (
+                <div key={badge} className="history-badge-card">
+                  <span className="hb-icon">{BADGE_INFO[badge]?.icon}</span>
+                  <span className="hb-label">{BADGE_INFO[badge]?.label}</span>
+                  <span className="hb-desc">{BADGE_INFO[badge]?.desc}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
         {results.length === 0 ? (
           <div className="history-empty">
             <p>🎯 No quiz attempts yet. Start your first quiz!</p>
@@ -107,3 +133,4 @@ const QuizHistory = () => {
 };
 
 export default QuizHistory;
+

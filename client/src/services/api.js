@@ -51,6 +51,8 @@ export const resultAPI = {
   submitResult: (resultData) => api.post('/results', resultData),
   getUserResults: () => api.get('/results/my-results'),
   getLeaderboard: () => api.get('/results/leaderboard'),
+  getAnalytics: () => api.get('/results/analytics'),
+  getRecommendations: () => api.get('/results/recommendations'),
   getAllResults: () => api.get('/results/all'),
   getResultById: (id) => api.get(`/results/${id}`)
 };

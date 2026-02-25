@@ -7,6 +7,7 @@ import Quiz from './pages/Quiz';
 import Results from './pages/Results';
 import QuizHistory from './pages/QuizHistory';
 import Leaderboard from './pages/Leaderboard';
+import Analytics from './pages/Analytics';
 import AdminDashboard from './pages/AdminDashboard';
 import AdminCreateQuiz from './pages/AdminCreateQuiz';
 import AdminEditQuiz from './pages/AdminEditQuiz';
@@ -76,6 +77,14 @@ function AppRoutes() {
             <Leaderboard />
           </ProtectedRoute>
         } 
+      />
+      <Route
+        path="/analytics"
+        element={
+          <ProtectedRoute>
+            <Analytics />
+          </ProtectedRoute>
+        }
       />
       <Route 
         path="/admin" 
