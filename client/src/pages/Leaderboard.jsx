@@ -49,7 +49,7 @@ const Leaderboard = () => {
         <TopBar 
           categories={categories}
           onCategorySelect={(category) => {
-            navigate('/dashboard');
+            navigate('/dashboard', { state: { selectedCategory: category } });
           }}
         />
         
