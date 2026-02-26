@@ -29,7 +29,8 @@ export const authAPI = {
   register: (username, password) => api.post('/auth/register', { username, password }),
   login: (username, password) => api.post('/auth/login', { username, password }),
   getProfile: () => api.get('/auth/profile'),
-  getAllUsers: () => api.get('/auth/users')
+  getAllUsers: () => api.get('/auth/users'),
+  updateUserRole: (id, role) => api.put(`/auth/users/${id}/role`, { role })
 };
 
 // Quiz API calls
@@ -49,6 +50,9 @@ export const quizAPI = {
 export const resultAPI = {
   submitResult: (resultData) => api.post('/results', resultData),
   getUserResults: () => api.get('/results/my-results'),
+  getLeaderboard: () => api.get('/results/leaderboard'),
+  getAnalytics: () => api.get('/results/analytics'),
+  getRecommendations: () => api.get('/results/recommendations'),
   getAllResults: () => api.get('/results/all'),
   getResultById: (id) => api.get(`/results/${id}`)
 };

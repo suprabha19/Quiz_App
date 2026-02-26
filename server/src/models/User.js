@@ -19,6 +19,11 @@ const userSchema = new mongoose.Schema({
     enum: ['user', 'admin'],
     default: 'user'
   },
+  badges: {
+    type: [String],
+    enum: ['first_quiz', 'perfect_score', 'top_scorer', 'quiz_veteran', 'knowledge_seeker'],
+    default: []
+  },
   createdAt: {
     type: Date,
     default: Date.now

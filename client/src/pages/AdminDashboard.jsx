@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { quizAPI, authAPI } from '../services/api';
+import { useAuth } from '../context/AuthContext';
 import '../styles/Admin.css';
 
 const AdminDashboard = () => {
@@ -13,7 +14,9 @@ const AdminDashboard = () => {
   const [deleteConfirm, setDeleteConfirm] = useState(null);
   const [users, setUsers] = useState([]);
   const [activeTab, setActiveTab] = useState('quizzes');
+  const [roleUpdating, setRoleUpdating] = useState(null);
   const navigate = useNavigate();
+  const { user: currentUser } = useAuth();
 
   const difficulties = ['All', 'Basic', 'Intermediate', 'Hard'];
 
@@ -58,6 +61,22 @@ const AdminDashboard = () => {
       setUsers(response.data);
     } catch (error) {
       console.error('Error fetching users:', error);
+    }
+  };
+
+  const handleRoleToggle = async (userId, currentRole) => {
+    const newRole = currentRole === 'admin' ? 'user' : 'admin';
+    const action = newRole === 'admin' ? 'promote to Admin' : 'demote to User';
+    if (!window.confirm(`Are you sure you want to ${action} this user?`)) return;
+
+    setRoleUpdating(userId);
+    try {
+      const response = await authAPI.updateUserRole(userId, newRole);
+      setUsers(users.map(u => u._id === userId ? { ...u, role: response.data.role } : u));
+    } catch (error) {
+      alert(error.response?.data?.message || 'Failed to update role');
+    } finally {
+      setRoleUpdating(null);
     }
   };
 
@@ -271,6 +290,7 @@ const AdminDashboard = () => {
                     <th>Username</th>
                     <th>Role</th>
                     <th>Joined Date</th>
+                    <th>Actions</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -283,6 +303,21 @@ const AdminDashboard = () => {
                         </span>
                       </td>
                       <td>{new Date(user.createdAt).toLocaleDateString()}</td>
+                      <td className="actions-cell">
+                        {user._id !== currentUser?._id ? (
+                          <button
+                            className={user.role === 'admin' ? 'btn-delete' : 'btn-edit'}
+                            disabled={roleUpdating === user._id}
+                            onClick={() => handleRoleToggle(user._id, user.role)}
+                          >
+                            {roleUpdating === user._id
+                              ? 'Updating...'
+                              : user.role === 'admin' ? 'Remove Admin' : 'Make Admin'}
+                          </button>
+                        ) : (
+                          <span className="self-label">You</span>
+                        )}
+                      </td>
                     </tr>
                   ))}
                 </tbody>

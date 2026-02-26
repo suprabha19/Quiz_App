@@ -25,12 +25,24 @@ const Sidebar = ({ categories, selectedCategory, setSelectedCategory }) => {
             <button
               key={category}
               className={`category-item ${selectedCategory === category ? 'active' : ''}`}
-              onClick={() => setSelectedCategory(category)}
+              onClick={() => { setSelectedCategory(category); navigate('/dashboard'); }}
             >
               {category}
             </button>
           ))
         )}
+      </div>
+
+      <div className="sidebar-nav">
+        <button className="sidebar-nav-item" onClick={() => navigate('/history')}>
+          📋 My History
+        </button>
+        <button className="sidebar-nav-item" onClick={() => navigate('/analytics')}>
+          📊 Analytics
+        </button>
+        <button className="sidebar-nav-item" onClick={() => navigate('/leaderboard')}>
+          🏆 Leaderboard
+        </button>
       </div>
 
       <div className="sidebar-footer">
