@@ -294,7 +294,7 @@ const Quiz = () => {
         </div>
       </div>
 
-      <div className="question-card">
+      <div className="question-card" key={currentQuestion._id}>
         <h3 className="question-text">{currentQuestion.question}</h3>
 
         <div className="options-list">

@@ -414,7 +414,7 @@ const Dashboard = () => {
         </div>
 
         {/* --- RECOMMENDATIONS SECTION (BOTTOM) --- */}
-        {recommendations.length > 0 && (
+        {isAdmin && recommendations.length > 0 && (
           <div className="recommendations-section">
             <h2>💡 Recommended for You</h2>
             <div className="recommendations-grid">
