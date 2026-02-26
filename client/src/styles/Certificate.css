@@ -213,24 +213,35 @@
     display: none !important;
   }
 
+  body {
+    background: white;
+    margin: 0;
+  }
+
+  /* Keep the outer container visible so the nested certificate shows;
+     only hide the score card and action buttons */
+  .results-container {
+    display: block !important;
+    min-height: unset;
+    padding: 0;
+    margin: 0;
+    background: white;
+  }
+
+  .results-card,
+  .results-actions {
+    display: none !important;
+  }
+
   .certificate-wrapper {
     background: white;
     padding: 0;
+    margin: 0;
   }
 
   .certificate-container {
     box-shadow: none;
     max-width: 100%;
-  }
-
-  body {
-    background: white;
-  }
-
-  .results-container,
-  .results-card,
-  .results-actions {
-    display: none !important;
   }
 
   .certificate-border {
