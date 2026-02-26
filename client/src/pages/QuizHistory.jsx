@@ -73,12 +73,13 @@ const QuizHistory = () => {
       <div className="main-content">
         <TopBar />
         
-        <div className="dashboard-header">
-          <h1>My Quiz History</h1>
-          <button className="btn-primary" onClick={() => navigate('/dashboard')}>
-            Take a Quiz
-          </button>
-        </div>
+        <div className="main-content-body">
+          <div className="dashboard-header">
+            <h1>My Quiz History</h1>
+            <button className="btn-primary" onClick={() => navigate('/dashboard')}>
+              Take a Quiz
+            </button>
+          </div>
 
         {badges.length > 0 && (
           <div className="history-badges-section">
@@ -130,6 +131,7 @@ const QuizHistory = () => {
             })}
           </div>
         )}
+        </div>
       </div>
     </div>
   );

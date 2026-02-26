@@ -325,17 +325,18 @@ const Dashboard = () => {
       <div className="main-content">
         <TopBar />
         
-        <div className="dashboard-header">
-          <h1>Welcome, {user.username}!</h1>
-          {isAdmin && (
-            <button className="btn-admin" onClick={() => navigate("/admin")}>
-              Admin Panel
-            </button>
-          )}
-        </div>
+        <div className="main-content-body">
+          <div className="dashboard-header">
+            <h1>Welcome, {user.username}!</h1>
+            {isAdmin && (
+              <button className="btn-admin" onClick={() => navigate("/admin")}>
+                Admin Panel
+              </button>
+            )}
+          </div>
 
-        {/* --- QUIZ SELECTION SECTION (TOP) --- */}
-        <div className="quiz-selection">
+          {/* --- QUIZ SELECTION SECTION (TOP) --- */}
+          <div className="quiz-selection">
           {!selectedCategory ? (
             <div className="welcome-card">
               <div className="welcome-icon">
@@ -449,6 +450,7 @@ const Dashboard = () => {
             </div>
           </div>
         )}
+        </div>
       </div>
     </div>
   );

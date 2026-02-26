@@ -48,12 +48,13 @@ const Leaderboard = () => {
       <div className="main-content">
         <TopBar />
         
-        <div className="dashboard-header">
-          <h1>🏆 Leaderboard</h1>
-          <button className="btn-primary" onClick={() => navigate('/dashboard')}>
-            Take a Quiz
-          </button>
-        </div>
+        <div className="main-content-body">
+          <div className="dashboard-header">
+            <h1>🏆 Leaderboard</h1>
+            <button className="btn-primary" onClick={() => navigate('/dashboard')}>
+              Take a Quiz
+            </button>
+          </div>
 
         {leaderboard.length === 0 ? (
           <div className="lb-empty">
@@ -105,6 +106,7 @@ const Leaderboard = () => {
             </table>
           </div>
         )}
+        </div>
       </div>
     </div>
   );
