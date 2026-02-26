@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
@@ -5,6 +6,14 @@ import Sidebar from "../components/Sidebar";
 import { quizAPI } from "../services/api";
 import "../styles/Dashboard.css";
 import { Medal, Star, Zap, Target, Stars } from "lucide-react";
+=======
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
+import Sidebar from '../components/Sidebar';
+import { quizAPI, resultAPI } from '../services/api';
+import '../styles/Dashboard.css';
+>>>>>>> de6ada3999649992ad2f0e03bf9bbcf0bd4102f7
 
 const Dashboard = () => {
   const [categories, setCategories] = useState([]);
@@ -12,13 +21,28 @@ const Dashboard = () => {
   const [selectedDifficulty, setSelectedDifficulty] = useState("");
   const [quizCount, setQuizCount] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [recommendations, setRecommendations] = useState([]);
   const { user, isAdmin } = useAuth();
   const navigate = useNavigate();
 
   const difficulties = ["Basic", "Intermediate", "Hard"];
 
   useEffect(() => {
-    fetchCategories();
+    const fetchInitial = async () => {
+      try {
+        const [catRes, recRes] = await Promise.all([
+          quizAPI.getCategories(),
+          resultAPI.getRecommendations()
+        ]);
+        setCategories(catRes.data);
+        setRecommendations(recRes.data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchInitial();
   }, []);
 
   useEffect(() => {
@@ -27,6 +51,7 @@ const Dashboard = () => {
     }
   }, [selectedCategory, selectedDifficulty]);
 
+<<<<<<< HEAD
   const fetchCategories = async () => {
     try {
       const response = await quizAPI.getCategories();
@@ -38,6 +63,8 @@ const Dashboard = () => {
     }
   };
 
+=======
+>>>>>>> de6ada3999649992ad2f0e03bf9bbcf0bd4102f7
   const fetchQuizCount = async () => {
     try {
       const response = await quizAPI.getQuizzesByFilter(
@@ -52,11 +79,19 @@ const Dashboard = () => {
 
   const handleStartQuiz = () => {
     if (selectedCategory && selectedDifficulty) {
+<<<<<<< HEAD
       navigate("/quiz", {
         state: {
           category: selectedCategory,
           difficulty: selectedDifficulty,
         },
+=======
+      navigate('/quiz', {
+        state: {
+          category: selectedCategory,
+          difficulty: selectedDifficulty
+        }
+>>>>>>> de6ada3999649992ad2f0e03bf9bbcf0bd4102f7
       });
     }
   };
@@ -77,7 +112,14 @@ const Dashboard = () => {
         <div className="dashboard-header">
           <h1>Welcome, {user.username}!</h1>
           {isAdmin && (
+<<<<<<< HEAD
             <button className="btn-admin" onClick={() => navigate("/admin")}>
+=======
+            <button
+              className="btn-admin"
+              onClick={() => navigate('/admin')}
+            >
+>>>>>>> de6ada3999649992ad2f0e03bf9bbcf0bd4102f7
               Admin Panel
             </button>
           )}
@@ -115,8 +157,34 @@ const Dashboard = () => {
           </div>
         </div> */}
 
+        {recommendations.length > 0 && (
+          <div className="recommendations-section">
+            <h2>💡 Recommended for You</h2>
+            <div className="recommendations-grid">
+              {recommendations.map((rec, idx) => (
+                <div key={idx} className="rec-card">
+                  <div className="rec-category">{rec.category}</div>
+                  <div className={`rec-difficulty difficulty-${rec.difficulty.toLowerCase()}`}>{rec.difficulty}</div>
+                  <div className="rec-score">Your avg: {rec.avgScore}%</div>
+                  <div className="rec-reason">{rec.reason}</div>
+                  <button
+                    className="btn-start-quiz rec-btn"
+                    onClick={() => navigate('/quiz', { state: { category: rec.category, difficulty: rec.difficulty } })}
+                  >
+                    Practice Now
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
         <div className="quiz-selection">
+<<<<<<< HEAD
           {/* <h2>Select Your Quiz</h2> */}
+=======
+          <h2>Select Your Quiz</h2>
+>>>>>>> de6ada3999649992ad2f0e03bf9bbcf0bd4102f7
 
           {!selectedCategory ? (
             // <div className="instruction">
@@ -184,8 +252,13 @@ const Dashboard = () => {
                 <div className="quiz-info">
                   <p className="quiz-count">
                     {quizCount > 0
+<<<<<<< HEAD
                       ? `${quizCount} question${quizCount !== 1 ? "s" : ""} available`
                       : "No questions available for this selection"}
+=======
+                      ? `${quizCount} question${quizCount !== 1 ? 's' : ''} available`
+                      : 'No questions available for this selection'}
+>>>>>>> de6ada3999649992ad2f0e03bf9bbcf0bd4102f7
                   </p>
                   {quizCount > 0 && (
                     <button
@@ -206,3 +279,4 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
+

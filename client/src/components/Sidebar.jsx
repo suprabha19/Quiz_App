@@ -110,6 +110,7 @@ const Sidebar = ({ categories, selectedCategory, setSelectedCategory }) => {
         {categories.length === 0 ? (
           <p className="no-categories">No categories available</p>
         ) : (
+<<<<<<< HEAD
           categories.map((category) => {
             const Icon = iconMap[category] || Code2;
 
@@ -136,6 +137,32 @@ const Sidebar = ({ categories, selectedCategory, setSelectedCategory }) => {
       </div>
 
       {/* footer */}
+=======
+          categories.map((category) => (
+            <button
+              key={category}
+              className={`category-item ${selectedCategory === category ? 'active' : ''}`}
+              onClick={() => { setSelectedCategory(category); navigate('/dashboard'); }}
+            >
+              {category}
+            </button>
+          ))
+        )}
+      </div>
+
+      <div className="sidebar-nav">
+        <button className="sidebar-nav-item" onClick={() => navigate('/history')}>
+          📋 My History
+        </button>
+        <button className="sidebar-nav-item" onClick={() => navigate('/analytics')}>
+          📊 Analytics
+        </button>
+        <button className="sidebar-nav-item" onClick={() => navigate('/leaderboard')}>
+          🏆 Leaderboard
+        </button>
+      </div>
+
+>>>>>>> de6ada3999649992ad2f0e03bf9bbcf0bd4102f7
       <div className="sidebar-footer">
         <div className="user-info">
           <p className="username">{user.username}</p>

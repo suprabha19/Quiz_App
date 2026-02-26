@@ -1,0 +1,96 @@
+.lb-table-wrapper {
+  background: white;
+  border-radius: 14px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+}
+
+.lb-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 1rem;
+}
+
+.lb-table thead {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.lb-table th {
+  padding: 16px 20px;
+  text-align: left;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+}
+
+.lb-table td {
+  padding: 16px 20px;
+  border-bottom: 1px solid #f0f0f0;
+  color: #333;
+}
+
+.lb-row:last-child td {
+  border-bottom: none;
+}
+
+.lb-row:hover td {
+  background: #f8f9ff;
+}
+
+.lb-row-top td {
+  font-weight: 600;
+}
+
+.lb-row-me td {
+  background: #f0f4ff;
+}
+
+.lb-rank {
+  font-size: 1.3rem;
+  text-align: center;
+  width: 60px;
+}
+
+.lb-username {
+  font-weight: 600;
+  color: #333;
+}
+
+.lb-you-badge {
+  color: #667eea;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.lb-percentage {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #667eea;
+}
+
+.lb-fraction {
+  color: #999;
+  font-size: 0.9rem;
+}
+
+.lb-difficulty {
+  padding: 3px 10px;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.lb-difficulty.lb-basic        { background: #d4edda; color: #155724; }
+.lb-difficulty.lb-intermediate { background: #fff3cd; color: #856404; }
+.lb-difficulty.lb-hard         { background: #f8d7da; color: #721c24; }
+
+.lb-empty {
+  text-align: center;
+  padding: 60px 20px;
+  color: #666;
+  font-size: 1.2rem;
+}
+
+.lb-empty p {
+  margin-bottom: 24px;
+}

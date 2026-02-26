@@ -277,6 +277,12 @@ td {
   animation: pulse 0.5s ease-in-out infinite;
 }
 
+.self-label {
+  font-size: 0.85rem;
+  color: #999;
+  font-style: italic;
+}
+
 @keyframes pulse {
   0%, 100% { transform: scale(1); }
   50% { transform: scale(1.05); }
