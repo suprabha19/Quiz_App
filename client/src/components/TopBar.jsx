@@ -6,6 +6,7 @@ import '../styles/TopBar.css';
 const TopBar = () => {
   const { user } = useAuth();
   const [showUserDetails, setShowUserDetails] = useState(false);
+  // TODO: Implement search functionality to filter quizzes and categories
   const [searchQuery, setSearchQuery] = useState('');
   const dropdownRef = useRef(null);
 
