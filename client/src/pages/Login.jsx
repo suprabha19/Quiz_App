@@ -1,23 +1,23 @@
-import { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
-import '../styles/Auth.css';
+import { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+import "../styles/Auth.css";
 
 const Login = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { login } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
+    setError("");
     setLoading(true);
 
     if (!username || !password) {
-      setError('Please fill in all fields');
+      setError("Please fill in all fields");
       setLoading(false);
       return;
     }
@@ -26,9 +26,9 @@ const Login = () => {
     setLoading(false);
 
     if (result.success) {
-      navigate('/dashboard');
+      navigate("/dashboard");
     } else {
-      setError(result.error || 'Login failed');
+      setError(result.error || "Login failed");
     }
   };
 
@@ -62,17 +62,17 @@ const Login = () => {
             />
           </div>
           <button type="submit" className="btn-primary" disabled={loading}>
-            {loading ? 'Logging in...' : 'Login'}
+            {loading ? "Logging in..." : "Login"}
           </button>
         </form>
         <p className="auth-link">
           Don't have an account? <Link to="/register">Register here</Link>
         </p>
-        <div className="demo-credentials">
+        {/* <div className="demo-credentials">
           <p><strong>Demo Credentials:</strong></p>
           <p>Admin: username: <code>admin</code>, password: <code>admin123</code></p>
           <p>User: username: <code>user</code>, password: <code>user123</code></p>
-        </div>
+        </div> */}
       </div>
     </div>
   );

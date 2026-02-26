@@ -1,36 +1,36 @@
-import { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
-import '../styles/Auth.css';
+import { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+import "../styles/Auth.css";
 
 const Register = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [error, setError] = useState('');
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { register } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
+    setError("");
     setLoading(true);
 
     if (!username || !password || !confirmPassword) {
-      setError('Please fill in all fields');
+      setError("Please fill in all fields");
       setLoading(false);
       return;
     }
 
     if (password !== confirmPassword) {
-      setError('Passwords do not match');
+      setError("Passwords do not match");
       setLoading(false);
       return;
     }
 
     if (password.length < 6) {
-      setError('Password must be at least 6 characters');
+      setError("Password must be at least 6 characters");
       setLoading(false);
       return;
     }
@@ -39,9 +39,10 @@ const Register = () => {
     setLoading(false);
 
     if (result.success) {
-      navigate('/dashboard');
+      alert("Registration successful! Please log in.");
+      navigate("/login");
     } else {
-      setError(result.error || 'Registration failed');
+      setError(result.error || "Registration failed");
     }
   };
 
@@ -86,7 +87,7 @@ const Register = () => {
             />
           </div>
           <button type="submit" className="btn-primary" disabled={loading}>
-            {loading ? 'Registering...' : 'Register'}
+            {loading ? "Registering..." : "Register"}
           </button>
         </form>
         <p className="auth-link">
