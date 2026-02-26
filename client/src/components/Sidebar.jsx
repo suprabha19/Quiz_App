@@ -110,39 +110,14 @@ const Sidebar = ({ categories, selectedCategory, setSelectedCategory }) => {
         {categories.length === 0 ? (
           <p className="no-categories">No categories available</p>
         ) : (
-<<<<<<< HEAD
-          categories.map((category) => {
-            const Icon = iconMap[category] || Code2;
-
-            return (
-              <button
-                key={category}
-                className={`category-row ${
-                  selectedCategory === category ? "active" : ""
-                }`}
-                onClick={() => setSelectedCategory(category)}
-              >
-                <div className="left">
-                  <span className="icon-box">
-                    <Icon size={16} />
-                  </span>
-                  <span className="cat-name">{category}</span>
-                </div>
-
-                <ChevronRight size={16} className="arrow" />
-              </button>
-            );
-          })
-        )}
-      </div>
-
-      {/* footer */}
-=======
           categories.map((category) => (
             <button
               key={category}
-              className={`category-item ${selectedCategory === category ? 'active' : ''}`}
-              onClick={() => { setSelectedCategory(category); navigate('/dashboard'); }}
+              className={`category-item ${selectedCategory === category ? "active" : ""}`}
+              onClick={() => {
+                setSelectedCategory(category);
+                navigate("/dashboard");
+              }}
             >
               {category}
             </button>
@@ -151,18 +126,26 @@ const Sidebar = ({ categories, selectedCategory, setSelectedCategory }) => {
       </div>
 
       <div className="sidebar-nav">
-        <button className="sidebar-nav-item" onClick={() => navigate('/history')}>
+        <button
+          className="sidebar-nav-item"
+          onClick={() => navigate("/history")}
+        >
           📋 My History
         </button>
-        <button className="sidebar-nav-item" onClick={() => navigate('/analytics')}>
+        <button
+          className="sidebar-nav-item"
+          onClick={() => navigate("/analytics")}
+        >
           📊 Analytics
         </button>
-        <button className="sidebar-nav-item" onClick={() => navigate('/leaderboard')}>
+        <button
+          className="sidebar-nav-item"
+          onClick={() => navigate("/leaderboard")}
+        >
           🏆 Leaderboard
         </button>
       </div>
 
->>>>>>> de6ada3999649992ad2f0e03bf9bbcf0bd4102f7
       <div className="sidebar-footer">
         <div className="user-info">
           <p className="username">{user.username}</p>
