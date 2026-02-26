@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { resultAPI, authAPI } from '../services/api';
 import Sidebar from '../components/Sidebar';
+import TopBar from '../components/TopBar';
 import { quizAPI } from '../services/api';
 import '../styles/QuizHistory.css';
 
@@ -70,6 +71,8 @@ const QuizHistory = () => {
       />
 
       <div className="main-content">
+        <TopBar />
+        
         <div className="dashboard-header">
           <h1>My Quiz History</h1>
           <button className="btn-primary" onClick={() => navigate('/dashboard')}>

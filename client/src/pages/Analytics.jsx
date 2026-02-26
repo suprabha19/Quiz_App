@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { resultAPI, quizAPI } from '../services/api';
 import Sidebar from '../components/Sidebar';
+import TopBar from '../components/TopBar';
 import '../styles/Analytics.css';
 
 const Analytics = () => {
@@ -48,6 +49,8 @@ const Analytics = () => {
       />
 
       <div className="main-content">
+        <TopBar />
+        
         <div className="dashboard-header">
           <h1>📊 My Analytics</h1>
           <button className="btn-primary" onClick={() => navigate('/dashboard')}>

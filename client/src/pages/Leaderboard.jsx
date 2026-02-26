@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { resultAPI, quizAPI } from '../services/api';
 import { useAuth } from '../context/AuthContext';
 import Sidebar from '../components/Sidebar';
+import TopBar from '../components/TopBar';
 import '../styles/Leaderboard.css';
 
 const MEDALS = ['🥇', '🥈', '🥉'];
@@ -45,6 +46,8 @@ const Leaderboard = () => {
       />
 
       <div className="main-content">
+        <TopBar />
+        
         <div className="dashboard-header">
           <h1>🏆 Leaderboard</h1>
           <button className="btn-primary" onClick={() => navigate('/dashboard')}>

@@ -248,6 +248,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import Sidebar from "../components/Sidebar";
+import TopBar from "../components/TopBar";
 import { quizAPI, resultAPI } from "../services/api";
 import "../styles/Dashboard.css";
 import { Medal, Star, Zap, Target, Stars } from "lucide-react";
@@ -322,6 +323,8 @@ const Dashboard = () => {
       />
 
       <div className="main-content">
+        <TopBar />
+        
         <div className="dashboard-header">
           <h1>Welcome, {user.username}!</h1>
           {isAdmin && (
