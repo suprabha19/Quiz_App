@@ -49,7 +49,12 @@ const Analytics = () => {
       />
 
       <div className="main-content">
-        <TopBar />
+        <TopBar 
+          categories={categories}
+          onCategorySelect={(category) => {
+            navigate('/dashboard');
+          }}
+        />
         
         <div className="main-content-body">
           <div className="dashboard-header">

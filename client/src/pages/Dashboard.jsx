@@ -569,7 +569,14 @@ const Dashboard = () => {
       />
 
       <div className="main-content">
-        <TopBar />
+        <TopBar 
+          categories={categories}
+          onCategorySelect={(category) => {
+            setSelectedCategory(category);
+            // Scroll to quiz selection section
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+        />
         
         <div className="main-content-body">
           <div className="dashboard-header">

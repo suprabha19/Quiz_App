@@ -3,17 +3,28 @@ import { useAuth } from '../context/AuthContext';
 import { Search, User, ChevronDown } from 'lucide-react';
 import '../styles/TopBar.css';
 
-const TopBar = () => {
+const TopBar = ({ categories = [], onCategorySelect }) => {
   const { user } = useAuth();
   const [showUserDetails, setShowUserDetails] = useState(false);
-  // TODO: Implement search functionality to filter quizzes and categories
   const [searchQuery, setSearchQuery] = useState('');
+  const [showSearchResults, setShowSearchResults] = useState(false);
   const dropdownRef = useRef(null);
+  const searchRef = useRef(null);
+
+  // Filter categories based on search query
+  const filteredCategories = searchQuery.trim()
+    ? categories.filter(category =>
+        category.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    : [];
 
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setShowUserDetails(false);
+      }
+      if (searchRef.current && !searchRef.current.contains(event.target)) {
+        setShowSearchResults(false);
       }
     };
 
@@ -21,17 +32,57 @@ const TopBar = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+    setShowSearchResults(true);
+  };
+
+  const handleCategoryClick = (category) => {
+    if (onCategorySelect) {
+      onCategorySelect(category);
+    }
+    setSearchQuery('');
+    setShowSearchResults(false);
+  };
+
   return (
     <div className="topbar">
-      <div className="topbar-search">
+      <div className="topbar-search" ref={searchRef}>
         <Search size={20} className="search-icon" />
         <input
           type="text"
           placeholder="Search quizzes, categories..."
           value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
+          onChange={handleSearchChange}
+          onFocus={() => searchQuery && setShowSearchResults(true)}
           className="search-input"
         />
+        
+        {showSearchResults && searchQuery && (
+          <div className="search-results-dropdown">
+            {filteredCategories.length > 0 ? (
+              <>
+                <div className="search-results-header">
+                  Quiz Categories
+                </div>
+                {filteredCategories.map((category) => (
+                  <button
+                    key={category}
+                    className="search-result-item"
+                    onClick={() => handleCategoryClick(category)}
+                  >
+                    <Search size={16} />
+                    <span>{category}</span>
+                  </button>
+                ))}
+              </>
+            ) : (
+              <div className="search-no-results">
+                No categories found for "{searchQuery}"
+              </div>
+            )}
+          </div>
+        )}
       </div>
 
       <div className="topbar-user" ref={dropdownRef}>
