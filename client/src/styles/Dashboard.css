@@ -136,7 +136,6 @@
   box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
 }
 
-<<<<<<< HEAD
 .welcome-card {
   background: #ffffff;
   padding: 40px 30px;
@@ -194,10 +193,11 @@
   font-size: 14px;
   font-weight: 500;
 }
+
 .welcome-footer strong {
   color: #334d8f;
 }
-=======
+
 /* Recommendations */
 .recommendations-section {
   background: white;
@@ -271,5 +271,3 @@
   font-size: 0.9rem !important;
   padding: 10px 16px !important;
 }
-
->>>>>>> de6ada3999649992ad2f0e03bf9bbcf0bd4102f7
