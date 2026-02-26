@@ -208,12 +208,12 @@ const Quiz = () => {
       return;
     }
 
+    setShowFeedback(false);
+    setSelectedAnswer(null);
     setCurrentDiffIndex(next.diffIdx);
     setAdaptiveDifficulty(DIFF_ORDER[next.diffIdx]);
     setCurrentQuestion(next.question);
     setQuestionNumber(nextQNum);
-    setSelectedAnswer(null);
-    setShowFeedback(false);
   };
 
   const submitQuiz = async (finalAnswers) => {
