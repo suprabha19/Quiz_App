@@ -81,7 +81,7 @@ const iconMap = {
 const Sidebar = ({ categories, selectedCategory, setSelectedCategory }) => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
-  const [isQuizzesExpanded, setIsQuizzesExpanded] = useState(false);
+  const [isQuizzesExpanded, setIsQuizzesExpanded] = useState(true);
 
   const handleLogout = () => {
     logout();
