@@ -99,10 +99,22 @@ const Sidebar = ({ categories, selectedCategory, setSelectedCategory }) => {
         </div>
       </div>
 
+      <div className="sidebar-nav">
+        <button
+          className="sidebar-nav-item"
+          onClick={() => {
+            setSelectedCategory("");
+            navigate("/dashboard");
+          }}
+        >
+          🏠 Dashboard
+        </button>
+      </div>
+
       {/* technologies title */}
       <div className="sidebar-section-title">
-        <span>Technologies</span>
-        <span className="count-badge">{categories.length} options</span>
+        <span>Quizzes</span>
+        <span className="count-badge">{categories.length} topics</span>
       </div>
 
       {/* list */}
@@ -113,13 +125,15 @@ const Sidebar = ({ categories, selectedCategory, setSelectedCategory }) => {
           categories.map((category) => (
             <button
               key={category}
-              className={`category-item ${selectedCategory === category ? "active" : ""}`}
+              className={`category-row ${selectedCategory === category ? "active" : ""}`}
               onClick={() => {
                 setSelectedCategory(category);
                 navigate("/dashboard");
               }}
             >
-              {category}
+              <div className="left">
+                <span className="cat-name">{category}</span>
+              </div>
             </button>
           ))
         )}

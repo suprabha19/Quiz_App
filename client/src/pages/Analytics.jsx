@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { resultAPI, quizAPI } from '../services/api';
 import Sidebar from '../components/Sidebar';
+import TopBar from '../components/TopBar';
 import '../styles/Analytics.css';
 
 const Analytics = () => {
@@ -48,12 +49,15 @@ const Analytics = () => {
       />
 
       <div className="main-content">
-        <div className="dashboard-header">
-          <h1>📊 My Analytics</h1>
-          <button className="btn-primary" onClick={() => navigate('/dashboard')}>
-            Take a Quiz
-          </button>
-        </div>
+        <TopBar />
+        
+        <div className="main-content-body">
+          <div className="dashboard-header">
+            <h1>📊 My Analytics</h1>
+            <button className="btn-primary" onClick={() => navigate('/dashboard')}>
+              Take a Quiz
+            </button>
+          </div>
 
         {analytics.totalQuizzes === 0 ? (
           <div className="analytics-empty">
@@ -142,6 +146,7 @@ const Analytics = () => {
             )}
           </>
         )}
+        </div>
       </div>
     </div>
   );

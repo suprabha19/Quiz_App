@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { resultAPI, authAPI } from '../services/api';
 import Sidebar from '../components/Sidebar';
+import TopBar from '../components/TopBar';
 import { quizAPI } from '../services/api';
 import '../styles/QuizHistory.css';
 
@@ -70,12 +71,15 @@ const QuizHistory = () => {
       />
 
       <div className="main-content">
-        <div className="dashboard-header">
-          <h1>My Quiz History</h1>
-          <button className="btn-primary" onClick={() => navigate('/dashboard')}>
-            Take a Quiz
-          </button>
-        </div>
+        <TopBar />
+        
+        <div className="main-content-body">
+          <div className="dashboard-header">
+            <h1>My Quiz History</h1>
+            <button className="btn-primary" onClick={() => navigate('/dashboard')}>
+              Take a Quiz
+            </button>
+          </div>
 
         {badges.length > 0 && (
           <div className="history-badges-section">
@@ -127,6 +131,7 @@ const QuizHistory = () => {
             })}
           </div>
         )}
+        </div>
       </div>
     </div>
   );

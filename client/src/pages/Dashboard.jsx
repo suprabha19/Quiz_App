@@ -494,6 +494,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import Sidebar from "../components/Sidebar";
+import TopBar from "../components/TopBar";
 import { quizAPI, resultAPI } from "../services/api";
 import "../styles/Dashboard.css";
 import { Medal, Star, Zap, Target, Stars } from "lucide-react";
@@ -568,17 +569,20 @@ const Dashboard = () => {
       />
 
       <div className="main-content">
-        <div className="dashboard-header">
-          <h1>Welcome, {user.username}!</h1>
-          {isAdmin && (
-            <button className="btn-admin" onClick={() => navigate("/admin")}>
-              Admin Panel
-            </button>
-          )}
-        </div>
+        <TopBar />
+        
+        <div className="main-content-body">
+          <div className="dashboard-header">
+            <h1>Welcome, {user.username}!</h1>
+            {isAdmin && (
+              <button className="btn-admin" onClick={() => navigate("/admin")}>
+                Admin Panel
+              </button>
+            )}
+          </div>
 
-        {/* --- QUIZ SELECTION SECTION (TOP) --- */}
-        <div className="quiz-selection">
+          {/* --- QUIZ SELECTION SECTION (TOP) --- */}
+          <div className="quiz-selection">
           {!selectedCategory ? (
             <div className="welcome-card">
               <div className="welcome-icon">
@@ -692,6 +696,7 @@ const Dashboard = () => {
             </div>
           </div>
         )}
+        </div>
       </div>
     </div>
   );
