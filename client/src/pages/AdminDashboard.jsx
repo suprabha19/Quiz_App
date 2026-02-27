@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { quizAPI, authAPI } from '../services/api';
+import { quizAPI, authAPI, resultAPI } from '../services/api';
 import { useAuth } from '../context/AuthContext';
 import '../styles/Admin.css';
 
@@ -13,6 +13,10 @@ const AdminDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [deleteConfirm, setDeleteConfirm] = useState(null);
   const [users, setUsers] = useState([]);
+  const [results, setResults] = useState([]);
+  const [filteredResults, setFilteredResults] = useState([]);
+  const [userFilter, setUserFilter] = useState('All');
+  const [categoryFilter, setCategoryFilter] = useState('All');
   const [activeTab, setActiveTab] = useState('quizzes');
   const [roleUpdating, setRoleUpdating] = useState(null);
   const navigate = useNavigate();
@@ -29,11 +33,18 @@ const AdminDashboard = () => {
     if (activeTab === 'users' && users.length === 0) {
       fetchUsers();
     }
+    if (activeTab === 'results' && results.length === 0) {
+      fetchResults();
+    }
   }, [activeTab]);
 
   useEffect(() => {
     filterQuizzes();
   }, [selectedCategory, selectedDifficulty, quizzes]);
+
+  useEffect(() => {
+    filterResults();
+  }, [userFilter, categoryFilter, results]);
 
   const fetchQuizzes = async () => {
     try {
@@ -62,6 +73,29 @@ const AdminDashboard = () => {
     } catch (error) {
       console.error('Error fetching users:', error);
     }
+  };
+
+  const fetchResults = async () => {
+    try {
+      const response = await resultAPI.getAllResults();
+      setResults(response.data);
+    } catch (error) {
+      console.error('Error fetching results:', error);
+    }
+  };
+
+  const filterResults = () => {
+    let filtered = results;
+    
+    if (userFilter !== 'All') {
+      filtered = filtered.filter(r => r.user?.username === userFilter);
+    }
+    
+    if (categoryFilter !== 'All') {
+      filtered = filtered.filter(r => r.category === categoryFilter);
+    }
+    
+    setFilteredResults(filtered);
   };
 
   const handleRoleToggle = async (userId, currentRole) => {
@@ -152,6 +186,12 @@ const AdminDashboard = () => {
           onClick={() => setActiveTab('users')}
         >
           Manage Users
+        </button>
+        <button 
+          className={`tab-button ${activeTab === 'results' ? 'active' : ''}`}
+          onClick={() => setActiveTab('results')}
+        >
+          User Results
         </button>
       </div>
 
@@ -320,6 +360,103 @@ const AdminDashboard = () => {
                       </td>
                     </tr>
                   ))}
+                </tbody>
+              </table>
+            )}
+          </div>
+        </>
+      )}
+
+      {activeTab === 'results' && (
+        <>
+          <div className="admin-stats">
+            <div className="stat-card">
+              <h3>{results.length}</h3>
+              <p>Total Quiz Attempts</p>
+            </div>
+            <div className="stat-card">
+              <h3>{new Set(results.map(r => r.user?._id).filter(Boolean)).size}</h3>
+              <p>Active Users</p>
+            </div>
+            <div className="stat-card">
+              <h3>{results.length > 0 ? Math.round(results.reduce((sum, r) => sum + (r.score / r.totalQuestions) * 100, 0) / results.length) : 0}%</h3>
+              <p>Average Score</p>
+            </div>
+          </div>
+
+          <div className="admin-filters">
+            <div className="filter-group">
+              <label>User:</label>
+              <select 
+                value={userFilter} 
+                onChange={(e) => setUserFilter(e.target.value)}
+              >
+                <option value="All">All Users</option>
+                {[...new Set(results.map(r => r.user?.username).filter(Boolean))].sort().map(username => (
+                  <option key={username} value={username}>{username}</option>
+                ))}
+              </select>
+            </div>
+            <div className="filter-group">
+              <label>Category:</label>
+              <select 
+                value={categoryFilter} 
+                onChange={(e) => setCategoryFilter(e.target.value)}
+              >
+                <option value="All">All Categories</option>
+                {[...new Set(results.map(r => r.category))].sort().map(cat => (
+                  <option key={cat} value={cat}>{cat}</option>
+                ))}
+              </select>
+            </div>
+          </div>
+
+          <div className="results-table">
+            <h2>User Quiz Results ({filteredResults.length})</h2>
+            {filteredResults.length === 0 ? (
+              <p className="no-results">No quiz results found.</p>
+            ) : (
+              <table>
+                <thead>
+                  <tr>
+                    <th>User</th>
+                    <th>Category</th>
+                    <th>Difficulty</th>
+                    <th>Score</th>
+                    <th>Percentage</th>
+                    <th>Date</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredResults.map((result) => {
+                    const percentage = Math.round((result.score / result.totalQuestions) * 100);
+                    return (
+                      <tr key={result._id}>
+                        <td className="user-cell">
+                          <strong>{result.user?.username || 'Unknown'}</strong>
+                        </td>
+                        <td>{result.category}</td>
+                        <td>
+                          <span className={`badge badge-${result.difficulty.toLowerCase()}`}>
+                            {result.difficulty}
+                          </span>
+                        </td>
+                        <td className="score-cell">
+                          {result.score} / {result.totalQuestions}
+                        </td>
+                        <td>
+                          <span className={`percentage-badge ${
+                            percentage >= 90 ? 'excellent' : 
+                            percentage >= 70 ? 'great' : 
+                            percentage >= 50 ? 'good' : 'poor'
+                          }`}>
+                            {percentage}%
+                          </span>
+                        </td>
+                        <td>{new Date(result.completedAt).toLocaleString()}</td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             )}

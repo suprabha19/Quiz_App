@@ -137,7 +137,7 @@
 }
 
 /* Quizzes Table */
-.quizzes-table, .users-table {
+.quizzes-table, .users-table, .results-table {
   background: white;
   padding: 30px;
   border-radius: 12px;
@@ -145,12 +145,12 @@
   overflow-x: auto;
 }
 
-.quizzes-table h2, .users-table h2 {
+.quizzes-table h2, .users-table h2, .results-table h2 {
   color: #333;
   margin-bottom: 20px;
 }
 
-.no-quizzes, .no-users {
+.no-quizzes, .no-users, .no-results {
   text-align: center;
   padding: 40px;
   color: #999;
@@ -467,4 +467,42 @@ td {
   .quiz-form {
     padding: 20px;
   }
+}
+
+/* Results Table Specific Styles */
+.user-cell {
+  font-weight: 500;
+}
+
+.score-cell {
+  font-weight: 600;
+  color: #333;
+}
+
+.percentage-badge {
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  display: inline-block;
+}
+
+.percentage-badge.excellent {
+  background: #d4edda;
+  color: #155724;
+}
+
+.percentage-badge.great {
+  background: #cce5ff;
+  color: #004085;
+}
+
+.percentage-badge.good {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.percentage-badge.poor {
+  background: #f8d7da;
+  color: #721c24;
 }
