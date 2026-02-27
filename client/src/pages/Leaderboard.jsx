@@ -46,7 +46,12 @@ const Leaderboard = () => {
       />
 
       <div className="main-content">
-        <TopBar />
+        <TopBar 
+          categories={categories}
+          onCategorySelect={(category) => {
+            navigate('/dashboard', { state: { selectedCategory: category } });
+          }}
+        />
         
         <div className="main-content-body">
           <div className="dashboard-header">

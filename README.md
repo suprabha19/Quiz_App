@@ -1,16 +1,31 @@
 # Quiz Application - MERN Stack
 
-A full-stack quiz application built with MongoDB, Express.js, React, and Node.js (MERN stack). Features include user authentication with JWT, multiple quiz categories, difficulty levels (Basic, Intermediate, Hard), and a comprehensive admin panel for dynamic quiz management.
+A full-stack quiz application built with MongoDB, Express.js, React, and Node.js (MERN stack). Features include user authentication with JWT, multiple quiz categories, difficulty levels (Basic, Intermediate, Hard), comprehensive admin panel for dynamic quiz management, badge system, leaderboard, and analytics.
+
+## 📋 Documentation
+
+- **[System Architecture](docs/diagrams/system-architecture.md)** - Three-tier architecture overview
+- **[Use Case Diagram](docs/diagrams/use-case-diagram.md)** - User roles and interactions
+- **[Class Diagram](docs/diagrams/class-diagram.md)** - Database models and relationships
+- **[Sequence Diagrams](docs/diagrams/sequence-diagram.md)** - Authentication and quiz flows
+- **[Activity Diagrams](docs/diagrams/activity-diagram.md)** - User and admin workflows
+- **[Gantt Chart](docs/diagrams/gantt-chart.md)** - Development timeline
+- **[Testing Guide](docs/TESTING.md)** - Unit and system testing documentation
 
 ## Features
 
 ### User Features
 - 🔐 **Authentication**: Secure login and registration with JWT tokens
-- 📚 **Multiple Categories**: General Knowledge, Science, History, Sports, Technology
+- 📚 **Multiple Categories**: HTML, CSS, JavaScript, React, Python, and more
 - 📊 **Difficulty Levels**: Basic, Intermediate, and Hard questions
 - 🎯 **Interactive Quiz**: Take quizzes with real-time progress tracking
-- 📈 **Results**: View detailed results after completing quizzes
-- 💾 **Result History**: All quiz attempts are saved to the database
+- 📈 **Results & Certificate**: View detailed results with downloadable certificates
+- 💾 **Result History**: All quiz attempts saved with detailed breakdowns
+- 🏆 **Leaderboard**: Compete with other users and see top performers
+- 📊 **Analytics Dashboard**: Visualize performance by category and difficulty
+- 🎖️ **Badge System**: Earn achievements (First Quiz, Perfect Score, Top Scorer, Quiz Veteran, Knowledge Seeker)
+- 💡 **Smart Recommendations**: Get personalized quiz suggestions based on your performance
+- 🔍 **Search Functionality**: Find quiz categories quickly
 
 ### Admin Features
 - ➕ **Create Quizzes**: Add new questions dynamically with custom categories
@@ -18,6 +33,9 @@ A full-stack quiz application built with MongoDB, Express.js, React, and Node.js
 - 🗑️ **Delete Quizzes**: Remove questions from the system
 - 📊 **Dashboard**: View statistics and manage all quizzes
 - 🔍 **Filter & Search**: Filter quizzes by category and difficulty
+- 👥 **User Management**: View all users and manage roles
+- 📋 **User Results**: See which user attempted what quiz and their results
+- 🔄 **Role Management**: Promote users to admin or demote admins to users
 
 ## Tech Stack
 
@@ -164,6 +182,10 @@ Client runs on http://localhost:3000
 - `POST /api/auth/login` - Login user
 - `GET /api/auth/profile` - Get user profile (protected)
 
+### User Management (Admin)
+- `GET /api/auth/users` - Get all users (admin only)
+- `PUT /api/auth/users/:id/role` - Update user role (admin only)
+
 ### Quizzes
 - `GET /api/quizzes` - Get all quizzes (protected)
 - `GET /api/quizzes/filter?category=X&difficulty=Y` - Filter quizzes (protected)
@@ -177,6 +199,9 @@ Client runs on http://localhost:3000
 ### Results
 - `POST /api/results` - Submit quiz result (protected)
 - `GET /api/results/my-results` - Get user's results (protected)
+- `GET /api/results/leaderboard` - Get leaderboard (protected)
+- `GET /api/results/analytics` - Get analytics (protected)
+- `GET /api/results/recommendations` - Get quiz recommendations (protected)
 - `GET /api/results/all` - Get all results (admin only)
 - `GET /api/results/:id` - Get single result (protected)
 
@@ -231,6 +256,26 @@ Client runs on http://localhost:3000
 }
 ```
 
+## Testing
+
+### Backend Tests
+```bash
+cd server
+npm test                    # Run all tests
+npm run test:watch          # Watch mode
+npm run test:coverage       # With coverage
+```
+
+### Frontend Tests
+```bash
+cd client
+npm test                    # Run all tests
+npm run test:ui             # UI mode
+npm run test:coverage       # With coverage
+```
+
+See [Testing Documentation](docs/TESTING.md) for comprehensive testing guide.
+
 ## Default Credentials
 
 After running the seed script:
@@ -246,13 +291,14 @@ After running the seed script:
 ## Future Enhancements
 
 - [ ] Timer for quizzes
-- [ ] Leaderboard
 - [ ] Quiz categories with images
 - [ ] Export results as PDF
 - [ ] Email notifications
 - [ ] Social authentication (Google, Facebook)
 - [ ] Question bank import/export
 - [ ] Multi-language support
+- [ ] Mobile application
+- [ ] Real-time multiplayer quizzes
 
 ## Contributing
 

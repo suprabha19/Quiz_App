@@ -48,6 +48,7 @@
 
 // export default Sidebar;
 
+import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import {
@@ -61,6 +62,7 @@ import {
   Terminal,
   ChevronRight,
   BookOpen,
+  ChevronDown,
 } from "lucide-react";
 import "../styles/Sidebar.css";
 
@@ -79,6 +81,7 @@ const iconMap = {
 const Sidebar = ({ categories, selectedCategory, setSelectedCategory }) => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const [isQuizzesExpanded, setIsQuizzesExpanded] = useState(true);
 
   const handleLogout = () => {
     logout();
@@ -109,48 +112,51 @@ const Sidebar = ({ categories, selectedCategory, setSelectedCategory }) => {
         >
           🏠 Dashboard
         </button>
-      </div>
-
-      {/* technologies title */}
-      <div className="sidebar-section-title">
-        <span>Quizzes</span>
-        <span className="count-badge">{categories.length} topics</span>
-      </div>
-
-      {/* list */}
-      <div className="categories-list">
-        {categories.length === 0 ? (
-          <p className="no-categories">No categories available</p>
-        ) : (
-          categories.map((category) => (
-            <button
-              key={category}
-              className={`category-row ${selectedCategory === category ? "active" : ""}`}
-              onClick={() => {
-                setSelectedCategory(category);
-                navigate("/dashboard");
-              }}
-            >
-              <div className="left">
-                <span className="cat-name">{category}</span>
-              </div>
-            </button>
-          ))
-        )}
-      </div>
-
-      <div className="sidebar-nav">
+        
         <button
-          className="sidebar-nav-item"
-          onClick={() => navigate("/history")}
+          className={`sidebar-nav-item ${isQuizzesExpanded ? "expanded" : ""}`}
+          onClick={() => setIsQuizzesExpanded(!isQuizzesExpanded)}
         >
-          📋 My History
+          <span>📝 Quizzes</span>
+          {isQuizzesExpanded ? (
+            <ChevronDown size={18} className="chevron-icon" />
+          ) : (
+            <ChevronRight size={18} className="chevron-icon" />
+          )}
         </button>
+
+        {isQuizzesExpanded && (
+          <div className="quizzes-subsection">
+            {categories.length === 0 ? (
+              <p className="no-categories">No categories available</p>
+            ) : (
+              categories.map((category) => (
+                <button
+                  key={category}
+                  className={`subsection-item ${selectedCategory === category ? "active" : ""}`}
+                  onClick={() => {
+                    setSelectedCategory(category);
+                    navigate("/dashboard");
+                  }}
+                >
+                  {category}
+                </button>
+              ))
+            )}
+          </div>
+        )}
+
         <button
           className="sidebar-nav-item"
           onClick={() => navigate("/analytics")}
         >
           📊 Analytics
+        </button>
+        <button
+          className="sidebar-nav-item"
+          onClick={() => navigate("/history")}
+        >
+          📋 My History
         </button>
         <button
           className="sidebar-nav-item"

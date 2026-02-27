@@ -491,7 +491,7 @@
 // export default Dashboard;
 
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import Sidebar from "../components/Sidebar";
 import TopBar from "../components/TopBar";
@@ -508,6 +508,7 @@ const Dashboard = () => {
   const [recommendations, setRecommendations] = useState([]);
   const { user, isAdmin } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const difficulties = ["Basic", "Intermediate", "Hard"];
 
@@ -520,6 +521,11 @@ const Dashboard = () => {
         ]);
         setCategories(catRes.data);
         setRecommendations(recRes.data);
+        
+        // Set category from navigation state if available
+        if (location.state?.selectedCategory) {
+          setSelectedCategory(location.state.selectedCategory);
+        }
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
@@ -527,7 +533,7 @@ const Dashboard = () => {
       }
     };
     fetchInitial();
-  }, []);
+  }, [location.state]);
 
   useEffect(() => {
     if (selectedCategory && selectedDifficulty) {
@@ -569,7 +575,14 @@ const Dashboard = () => {
       />
 
       <div className="main-content">
-        <TopBar />
+        <TopBar 
+          categories={categories}
+          onCategorySelect={(category) => {
+            setSelectedCategory(category);
+            // Scroll to quiz selection section
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+        />
         
         <div className="main-content-body">
           <div className="dashboard-header">
