@@ -379,7 +379,7 @@ const AdminDashboard = () => {
               <p>Active Users</p>
             </div>
             <div className="stat-card">
-              <h3>{results.length > 0 ? Math.round(results.reduce((sum, r) => sum + (r.score / r.totalQuestions) * 100, 0) / results.length) : 0}%</h3>
+              <h3>{results.length > 0 ? Math.round(results.filter(r => r.totalQuestions > 0).reduce((sum, r) => sum + (r.score / r.totalQuestions) * 100, 0) / results.filter(r => r.totalQuestions > 0).length) : 0}%</h3>
               <p>Average Score</p>
             </div>
           </div>
@@ -429,7 +429,9 @@ const AdminDashboard = () => {
                 </thead>
                 <tbody>
                   {filteredResults.map((result) => {
-                    const percentage = Math.round((result.score / result.totalQuestions) * 100);
+                    const percentage = result.totalQuestions > 0 
+                      ? Math.round((result.score / result.totalQuestions) * 100)
+                      : 0;
                     return (
                       <tr key={result._id}>
                         <td className="user-cell">
