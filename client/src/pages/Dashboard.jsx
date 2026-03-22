@@ -156,13 +156,10 @@ const Dashboard = () => {
       setQuizCount(response.data.length);
     } catch (error) {
       console.error("Error fetching quiz count:", error);
-<<<<<<< HEAD
       const res = await quizAPI.getQuizzesByFilter(selectedCategory, selectedDifficulty);
-      setQuizCount(res.data.length)
+      setQuizCount(res.data.length);
     } catch (err) {
       console.error(err);
-=======
->>>>>>> ccf311b16efba35f2b8dec4f2882011f6868a650
     }
   };
 
@@ -172,6 +169,8 @@ const Dashboard = () => {
         state: { category: selectedCategory, difficulty: selectedDifficulty },
       });
     }
+    if (selectedCategory && selectedDifficulty)
+      navigate("/quiz", { state: { category: selectedCategory, difficulty: selectedDifficulty } });
   };
 
   /* derived data */
