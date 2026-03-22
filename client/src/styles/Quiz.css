@@ -276,6 +276,7 @@
   padding: 15px 30px;
   font-size: 1.1rem;
   font-weight: 600;
+  border-radius: 12px;
 }
 
 .error-container {
@@ -286,13 +287,59 @@
   justify-content: center;
   color: white;
   text-align: center;
+  padding: 20px;
 }
 
 .error-container h2 {
   margin-bottom: 20px;
+  font-size: 1.8rem;
 }
 
 .error-container button {
-  padding: 12px 24px;
+  padding: 12px 28px;
   font-size: 1rem;
+  border-radius: 12px;
+}
+
+@media (max-width: 640px) {
+  .quiz-container {
+    padding: 20px 12px;
+  }
+
+  .quiz-header {
+    padding: 20px;
+  }
+
+  .question-card {
+    padding: 24px 20px;
+  }
+
+  .question-text {
+    font-size: 1.15rem;
+  }
+
+  .option-button {
+    padding: 14px 16px;
+    font-size: 1rem;
+  }
+
+  .option-letter {
+    width: 34px;
+    height: 34px;
+    font-size: 1rem;
+  }
+
+  .quiz-actions {
+    flex-direction: column;
+  }
+
+  .quiz-actions button {
+    width: 100%;
+    padding: 14px;
+  }
+
+  .quiz-timer {
+    font-size: 1.15rem;
+    padding: 6px 14px;
+  }
 }

@@ -94,3 +94,32 @@
 .lb-empty p {
   margin-bottom: 24px;
 }
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .lb-table th,
+  .lb-table td {
+    padding: 12px 10px;
+    font-size: 0.9rem;
+  }
+
+  .lb-rank {
+    width: 40px;
+    font-size: 1.1rem;
+  }
+
+  .lb-percentage {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .lb-table-wrapper {
+    overflow-x: auto;
+  }
+
+  .lb-table {
+    min-width: 480px;
+  }
+}
+
