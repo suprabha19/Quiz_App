@@ -26,7 +26,7 @@ api.interceptors.request.use(
 
 // Auth API calls
 export const authAPI = {
-  register: (username, password) => api.post('/auth/register', { username, password }),
+  register: (username, email, password) => api.post('/auth/register', { username, email, password }),
   login: (username, password) => api.post('/auth/login', { username, password }),
   getProfile: () => api.get('/auth/profile'),
   getAllUsers: () => api.get('/auth/users'),

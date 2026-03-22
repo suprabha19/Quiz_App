@@ -11,18 +11,27 @@ const generateToken = (id) => {
 // Register new user
 export const registerUser = async (req, res) => {
   try {
-    const { username, password } = req.body;
+    const { username, email, password } = req.body;
 
-    // Check if user exists
+    // Check if username already exists
     const userExists = await User.findOne({ username });
 
     if (userExists) {
       return res.status(400).json({ message: 'User already exists' });
     }
 
+    // Check if email is already registered (if provided)
+    if (email) {
+      const emailExists = await User.findOne({ email });
+      if (emailExists) {
+        return res.status(400).json({ message: 'Email already in use' });
+      }
+    }
+
     // Create user
     const user = await User.create({
       username,
+      ...(email && { email }),
       password,
       role: 'user'
     });
@@ -31,6 +40,7 @@ export const registerUser = async (req, res) => {
       res.status(201).json({
         _id: user._id,
         username: user.username,
+        email: user.email,
         role: user.role,
         token: generateToken(user._id)
       });
