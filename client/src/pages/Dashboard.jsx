@@ -16,7 +16,7 @@ const CATEGORY_EMOJI = {
 };
 
 const DIFFICULTIES = [
-  { label: "Basic", emoji: "🌱", color: "#16a34a", bg: "#dcfce7", border: "#86efac" },
+  { label: "Basic",        emoji: "🌱", color: "#16a34a", bg: "#dcfce7", border: "#86efac" },
   { label: "Intermediate", emoji: "⚡", color: "#d97706", bg: "#fef3c7", border: "#fcd34d" },
   { label: "Hard",         emoji: "🔥", color: "#dc2626", bg: "#fee2e2", border: "#fca5a5" },
 ];
@@ -59,6 +59,21 @@ const Dashboard = () => {
   const [categories, setCategories]             = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedDifficulty, setSelectedDifficulty] = useState("");
+<<<<<<< HEAD
+  const [quizCount, setQuizCount] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [recommendations, setRecommendations] = useState([]);
+  // Real-time stats
+  const [stats, setStats] = useState({
+    totalQuizzes: 0,
+    userAttempts: 0,
+    avgScore: 0,
+    badgeCount: 0,
+  });
+  const [recentActivity, setRecentActivity] = useState([]);
+  const [lastUpdated, setLastUpdated] = useState(null);
+  const refreshIntervalRef = useRef(null);
+=======
   const [quizCount, setQuizCount]               = useState(0);
   const [loading, setLoading]                   = useState(true);
   const [isRefreshing, setIsRefreshing]         = useState(false);
@@ -68,6 +83,7 @@ const Dashboard = () => {
   const [allResults, setAllResults]             = useState([]);
   const [lastUpdated, setLastUpdated]           = useState(null);
   const refreshIntervalRef                      = useRef(null);
+>>>>>>> c56f47f2f8243449a04853f4ec787dade8b571ca
 
   const { user, isAdmin } = useAuth();
   const navigate          = useNavigate();
@@ -88,6 +104,32 @@ const Dashboard = () => {
       setCategories(catRes.data);
       setRecommendations(recRes.data);
 
+<<<<<<< HEAD
+      const results = resultRes.data || [];
+      const validResults = results.filter((r) => r.totalQuestions > 0);
+      const avgScore =
+        validResults.length > 0
+          ? Math.round(
+              validResults.reduce(
+                (s, r) => s + (r.score / r.totalQuestions) * 100,
+                0,
+              ) / validResults.length,
+            )
+          : 0;
+
+      setStats((prev) => ({
+        ...prev,
+        userAttempts: results.length,
+        avgScore,
+        badgeCount: user?.badges?.length || 0,
+      }));
+
+      // Recent activity: last 5 results
+      const sorted = [...results].sort(
+        (a, b) => new Date(b.completedAt) - new Date(a.completedAt),
+      );
+      setRecentActivity(sorted.slice(0, 5));
+=======
       const results      = resultRes.data || [];
       const valid        = results.filter(r => r.totalQuestions > 0);
       const avgScore     = valid.length
@@ -101,6 +143,7 @@ const Dashboard = () => {
         avgScore,
         badgeCount: user?.badges?.length || 0,
       });
+>>>>>>> c56f47f2f8243449a04853f4ec787dade8b571ca
       setLastUpdated(new Date());
       if (location.state?.selectedCategory) setSelectedCategory(location.state.selectedCategory);
     } catch (err) {
