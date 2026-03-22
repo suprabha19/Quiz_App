@@ -135,7 +135,7 @@ const AdminDashboard = () => {
 
   const exportCSV = (data, filename) => {
     if (!data.length) return;
-    const keys = Object.keys(data[0]).filter(k => typeof data[0][k] !== 'object');
+    const keys = Object.keys(data[0]).filter(k => data[0][k] === null || typeof data[0][k] !== 'object');
     const csv = [keys.join(','), ...data.map(row =>
       keys.map(k => JSON.stringify(row[k] ?? '')).join(',')
     )].join('\n');
