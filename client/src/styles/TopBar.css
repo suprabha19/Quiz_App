@@ -250,3 +250,25 @@
   text-align: right;
   word-break: break-word;
 }
+
+/* ── Responsive ── */
+@media (max-width: 640px) {
+  .topbar {
+    padding: 10px 16px;
+    border-radius: 0;
+  }
+
+  .topbar-search {
+    max-width: 100%;
+    padding: 8px 12px;
+  }
+
+  .user-name {
+    display: none;
+  }
+
+  .user-details-dropdown {
+    min-width: 240px;
+    right: -12px;
+  }
+}

@@ -172,3 +172,21 @@
   background: rgba(220, 53, 69, 0.4);
   color: white;
 }
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 220px;
+    min-width: 220px;
+    padding: 16px 10px;
+  }
+
+  .brand-name {
+    font-size: 15px;
+  }
+
+  .sidebar-nav-item {
+    font-size: 13px;
+    padding: 9px 12px;
+  }
+}

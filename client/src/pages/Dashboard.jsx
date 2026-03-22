@@ -108,6 +108,15 @@ const Dashboard = () => {
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedDifficulty, setSelectedDifficulty] = useState("");
+  const [quizCount, setQuizCount]               = useState(0);
+  const [loading, setLoading]                   = useState(true);
+  const [isRefreshing, setIsRefreshing]         = useState(false);
+  const [recommendations, setRecommendations]   = useState([]);
+  const [activeTab, setActiveTab]               = useState("overview");
+  const [stats, setStats]                       = useState({ totalQuizzes: 0, userAttempts: 0, avgScore: 0, badgeCount: 0 });
+  const [allResults, setAllResults]             = useState([]);
+  const [lastUpdated, setLastUpdated]           = useState(null);
+  const refreshIntervalRef                      = useRef(null);
   const [quizCount, setQuizCount] = useState(0);
   const [loading, setLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -129,6 +138,41 @@ const Dashboard = () => {
 
   const REFRESH_MS = 30000;
 
+  const fetchAll = useCallback(async (silent = false) => {
+    if (!silent) setLoading(true);
+    else setIsRefreshing(true);
+    try {
+      const [catRes, recRes, resultRes, allQuizRes] = await Promise.all([
+        quizAPI.getCategories(),
+        resultAPI.getRecommendations(),
+        resultAPI.getUserResults(),
+        quizAPI.getAllQuizzes(),
+      ]);
+      setCategories(catRes.data);
+      setRecommendations(recRes.data);
+
+      const results      = resultRes.data || [];
+      const valid        = results.filter(r => r.totalQuestions > 0);
+      const avgScore     = valid.length
+        ? Math.round(valid.reduce((s, r) => s + (r.score / r.totalQuestions) * 100, 0) / valid.length)
+        : 0;
+
+      setAllResults([...results].sort((a, b) => new Date(b.completedAt) - new Date(a.completedAt)));
+      setStats({
+        totalQuizzes: allQuizRes.data.length,
+        userAttempts: results.length,
+        avgScore,
+        badgeCount: user?.badges?.length || 0,
+      });
+      setLastUpdated(new Date());
+      if (location.state?.selectedCategory) setSelectedCategory(location.state.selectedCategory);
+    } catch (err) {
+      console.error("Dashboard fetch error:", err);
+    } finally {
+      setLoading(false);
+      setIsRefreshing(false);
+    }
+  }, [user?.badges?.length, location.state]);
   const fetchAll = useCallback(
     async (silent = false) => {
       if (!silent) setLoading(true);
