@@ -1,181 +1,90 @@
-// import { useAuth } from '../context/AuthContext';
-// import { useNavigate } from 'react-router-dom';
-// import '../styles/Sidebar.css';
-
-// const Sidebar = ({ categories, selectedCategory, setSelectedCategory }) => {
-//   const { user, logout } = useAuth();
-//   const navigate = useNavigate();
-
-//   const handleLogout = () => {
-//     logout();
-//     navigate('/login');
-//   };
-
-//   return (
-//     <div className="sidebar">
-//       <div className="sidebar-header">
-//         <h2>Quiz Categories</h2>
-//       </div>
-
-//       <div className="categories-list">
-//         {categories.length === 0 ? (
-//           <p className="no-categories">No categories available</p>
-//         ) : (
-//           categories.map((category) => (
-//             <button
-//               key={category}
-//               className={`category-item ${selectedCategory === category ? 'active' : ''}`}
-//               onClick={() => setSelectedCategory(category)}
-//             >
-//               {category}
-//             </button>
-//           ))
-//         )}
-//       </div>
-
-//       <div className="sidebar-footer">
-//         <div className="user-info">
-//           <p><strong>{user.username}</strong></p>
-//           <p className="user-role">{user.role === 'admin' ? 'Admin' : 'User'}</p>
-//         </div>
-//         <button className="btn-logout" onClick={handleLogout}>
-//           Logout
-//         </button>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default Sidebar;
-
-import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import {
-  Code2,
-  Layout,
-  Braces,
-  Atom,
-  Server,
-  Database,
-  Coffee,
-  Terminal,
-  ChevronRight,
-  BookOpen,
-  ChevronDown,
+  BookOpen, LayoutDashboard, TrendingUp, Activity,
+  BarChart2, History, Trophy, LogOut, Play,
 } from "lucide-react";
 import "../styles/Sidebar.css";
 
-const iconMap = {
-  HTML: Code2,
-  CSS: Layout,
-  JavaScript: Braces,
-  React: Atom,
-  "Node.js": Server,
-  Nodejs: Server,
-  MongoDB: Database,
-  Java: Coffee,
-  Python: Terminal,
-};
+const getInitials = (name = "") => name.trim().slice(0, 2).toUpperCase() || "U";
 
-const Sidebar = ({ categories, selectedCategory, setSelectedCategory }) => {
+const Sidebar = ({
+  categories,
+  selectedCategory,
+  setSelectedCategory,
+  activeTab,
+  setActiveTab,
+}) => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
-  const [isQuizzesExpanded, setIsQuizzesExpanded] = useState(true);
 
   const handleLogout = () => {
     logout();
     navigate("/login");
   };
 
+  const dashTabs = [
+    { id: "overview",  label: "Overview",    Icon: LayoutDashboard },
+    { id: "quiz",      label: "Take Quiz",   Icon: Play            },
+    { id: "progress",  label: "My Progress", Icon: TrendingUp      },
+    { id: "activity",  label: "Activity",    Icon: Activity        },
+  ];
+
   return (
     <div className="sidebar">
-      {/* top card */}
-      <div className="sidebar-top-card">
-        <div className="top-icon">
-          <BookOpen size={18} />
+      {/* Brand */}
+      <div className="sidebar-brand">
+        <div className="brand-icon-wrap">
+          <BookOpen size={20} />
         </div>
-
         <div>
-          <h3>QuizSphere</h3>
-          <p>Test your knowledge & improve skills</p>
+          <h3 className="brand-name">QuizSphere</h3>
+          <p className="brand-tagline">User Dashboard</p>
         </div>
       </div>
 
-      <div className="sidebar-nav">
-        <button
-          className="sidebar-nav-item"
-          onClick={() => {
-            setSelectedCategory("");
-            navigate("/dashboard");
-          }}
-        >
-          🏠 Dashboard
-        </button>
+      {/* Nav */}
+      <nav className="sidebar-nav">
+        {dashTabs.map(({ id, label, Icon }) => (
+          <button
+            key={id}
+            className={`sidebar-nav-item ${activeTab === id ? "active" : ""}`}
+            onClick={() => setActiveTab(id)}
+          >
+            <Icon size={17} className="nav-item-icon" />
+            <span>{label}</span>
+          </button>
+        ))}
 
-        <button
-          className={`sidebar-nav-item ${isQuizzesExpanded ? "expanded" : ""}`}
-          onClick={() => setIsQuizzesExpanded(!isQuizzesExpanded)}
-        >
-          <span>📝 Quizzes</span>
-          {isQuizzesExpanded ? (
-            <ChevronDown size={18} className="chevron-icon" />
-          ) : (
-            <ChevronRight size={18} className="chevron-icon" />
-          )}
-        </button>
+        <div className="sidebar-nav-divider" />
 
-        {isQuizzesExpanded && (
-          <div className="quizzes-subsection">
-            {categories.length === 0 ? (
-              <p className="no-categories">No categories available</p>
-            ) : (
-              categories.map((category) => (
-                <button
-                  key={category}
-                  className={`subsection-item ${selectedCategory === category ? "active" : ""}`}
-                  onClick={() => {
-                    setSelectedCategory(category);
-                    navigate("/dashboard");
-                  }}
-                >
-                  {category}
-                </button>
-              ))
-            )}
-          </div>
-        )}
+        <button className="sidebar-nav-item" onClick={() => navigate("/analytics")}>
+          <BarChart2 size={17} className="nav-item-icon" />
+          <span>Analytics</span>
+        </button>
+        <button className="sidebar-nav-item" onClick={() => navigate("/history")}>
+          <History size={17} className="nav-item-icon" />
+          <span>My History</span>
+        </button>
+        <button className="sidebar-nav-item" onClick={() => navigate("/leaderboard")}>
+          <Trophy size={17} className="nav-item-icon" />
+          <span>Leaderboard</span>
+        </button>
+      </nav>
 
-        <button
-          className="sidebar-nav-item"
-          onClick={() => navigate("/analytics")}
-        >
-          📊 Analytics
-        </button>
-        <button
-          className="sidebar-nav-item"
-          onClick={() => navigate("/history")}
-        >
-          📋 My History
-        </button>
-        <button
-          className="sidebar-nav-item"
-          onClick={() => navigate("/leaderboard")}
-        >
-          🏆 Leaderboard
-        </button>
-      </div>
-
+      {/* Footer */}
       <div className="sidebar-footer">
-        <div className="user-info">
-          <p className="username">{user.username}</p>
-          <span className="role">
-            {user.role === "admin" ? "Admin" : "User"}
-          </span>
+        <div className="sidebar-user-row">
+          <div className="sidebar-avatar">{getInitials(user.username)}</div>
+          <div className="sidebar-user-info">
+            <p className="sidebar-username">{user.username}</p>
+            <span className="sidebar-role-badge">
+              {user.role === "admin" ? "Admin" : "User"}
+            </span>
+          </div>
         </div>
-
         <button className="btn-logout" onClick={handleLogout}>
-          Logout
+          <LogOut size={15} /> Logout
         </button>
       </div>
     </div>
