@@ -5,20 +5,57 @@ import Sidebar from "../components/Sidebar";
 import { quizAPI, resultAPI } from "../services/api";
 import "../styles/Dashboard.css";
 import {
-  RefreshCw, Play, Trophy, Target, Star, Clock,
-  ChevronRight, Award, BarChart2, BookOpen, TrendingUp, Medal, Zap, Stars,
+  RefreshCw,
+  Play,
+  Trophy,
+  Target,
+  Star,
+  Clock,
+  ChevronRight,
+  Award,
+  BarChart2,
+  BookOpen,
+  TrendingUp,
+  Medal,
+  Zap,
+  Stars,
 } from "lucide-react";
 
 /* ── helpers ── */
 const CATEGORY_EMOJI = {
-  HTML: "🌐", CSS: "🎨", JavaScript: "⚡", React: "⚛️",
-  "Node.js": "🟢", Nodejs: "🟢", MongoDB: "🍃", Java: "☕", Python: "🐍",
+  HTML: "🌐",
+  CSS: "🎨",
+  JavaScript: "⚡",
+  React: "⚛️",
+  "Node.js": "🟢",
+  Nodejs: "🟢",
+  MongoDB: "🍃",
+  Java: "☕",
+  Python: "🐍",
 };
 
 const DIFFICULTIES = [
-  { label: "Basic",        emoji: "🌱", color: "#16a34a", bg: "#dcfce7", border: "#86efac" },
-  { label: "Intermediate", emoji: "⚡", color: "#d97706", bg: "#fef3c7", border: "#fcd34d" },
-  { label: "Hard",         emoji: "🔥", color: "#dc2626", bg: "#fee2e2", border: "#fca5a5" },
+  {
+    label: "Basic",
+    emoji: "🌱",
+    color: "#16a34a",
+    bg: "#dcfce7",
+    border: "#86efac",
+  },
+  {
+    label: "Intermediate",
+    emoji: "⚡",
+    color: "#d97706",
+    bg: "#fef3c7",
+    border: "#fcd34d",
+  },
+  {
+    label: "Hard",
+    emoji: "🔥",
+    color: "#dc2626",
+    bg: "#fee2e2",
+    border: "#fca5a5",
+  },
 ];
 
 const getScoreColor = (pct) =>
@@ -42,11 +79,23 @@ const ProgressRing = ({ percentage, size = 100, strokeWidth = 10 }) => {
   const color = getScoreColor(percentage);
   return (
     <svg width={size} height={size} style={{ transform: "rotate(-90deg)" }}>
-      <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke="#2a2a3e" strokeWidth={strokeWidth} />
       <circle
-        cx={size / 2} cy={size / 2} r={r} fill="none"
-        stroke={color} strokeWidth={strokeWidth}
-        strokeDasharray={circ} strokeDashoffset={offset}
+        cx={size / 2}
+        cy={size / 2}
+        r={r}
+        fill="none"
+        stroke="#2a2a3e"
+        strokeWidth={strokeWidth}
+      />
+      <circle
+        cx={size / 2}
+        cy={size / 2}
+        r={r}
+        fill="none"
+        stroke={color}
+        strokeWidth={strokeWidth}
+        strokeDasharray={circ}
+        strokeDashoffset={offset}
         strokeLinecap="round"
         style={{ transition: "stroke-dashoffset 1.2s ease" }}
       />
@@ -56,103 +105,78 @@ const ProgressRing = ({ percentage, size = 100, strokeWidth = 10 }) => {
 
 /* ── component ── */
 const Dashboard = () => {
-  const [categories, setCategories]             = useState([]);
+  const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedDifficulty, setSelectedDifficulty] = useState("");
-<<<<<<< HEAD
   const [quizCount, setQuizCount] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const [recommendations, setRecommendations] = useState([]);
-  // Real-time stats
+  const [activeTab, setActiveTab] = useState("overview");
   const [stats, setStats] = useState({
     totalQuizzes: 0,
     userAttempts: 0,
     avgScore: 0,
     badgeCount: 0,
   });
-  const [recentActivity, setRecentActivity] = useState([]);
+  const [allResults, setAllResults] = useState([]);
   const [lastUpdated, setLastUpdated] = useState(null);
   const refreshIntervalRef = useRef(null);
-=======
-  const [quizCount, setQuizCount]               = useState(0);
-  const [loading, setLoading]                   = useState(true);
-  const [isRefreshing, setIsRefreshing]         = useState(false);
-  const [recommendations, setRecommendations]   = useState([]);
-  const [activeTab, setActiveTab]               = useState("overview");
-  const [stats, setStats]                       = useState({ totalQuizzes: 0, userAttempts: 0, avgScore: 0, badgeCount: 0 });
-  const [allResults, setAllResults]             = useState([]);
-  const [lastUpdated, setLastUpdated]           = useState(null);
-  const refreshIntervalRef                      = useRef(null);
->>>>>>> c56f47f2f8243449a04853f4ec787dade8b571ca
 
   const { user, isAdmin } = useAuth();
-  const navigate          = useNavigate();
-  const location          = useLocation();
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const REFRESH_MS = 30000;
 
-  const fetchAll = useCallback(async (silent = false) => {
-    if (!silent) setLoading(true);
-    else setIsRefreshing(true);
-    try {
-      const [catRes, recRes, resultRes, allQuizRes] = await Promise.all([
-        quizAPI.getCategories(),
-        resultAPI.getRecommendations(),
-        resultAPI.getUserResults(),
-        quizAPI.getAllQuizzes(),
-      ]);
-      setCategories(catRes.data);
-      setRecommendations(recRes.data);
+  const fetchAll = useCallback(
+    async (silent = false) => {
+      if (!silent) setLoading(true);
+      else setIsRefreshing(true);
+      try {
+        const [catRes, recRes, resultRes, allQuizRes] = await Promise.all([
+          quizAPI.getCategories(),
+          resultAPI.getRecommendations(),
+          resultAPI.getUserResults(),
+          quizAPI.getAllQuizzes(),
+        ]);
+        setCategories(catRes.data);
+        setRecommendations(recRes.data);
 
-<<<<<<< HEAD
-      const results = resultRes.data || [];
-      const validResults = results.filter((r) => r.totalQuestions > 0);
-      const avgScore =
-        validResults.length > 0
+        const results = resultRes.data || [];
+        const valid = results.filter((r) => r.totalQuestions > 0);
+        const avgScore = valid.length
           ? Math.round(
-              validResults.reduce(
+              valid.reduce(
                 (s, r) => s + (r.score / r.totalQuestions) * 100,
                 0,
-              ) / validResults.length,
+              ) / valid.length,
             )
           : 0;
 
-      setStats((prev) => ({
-        ...prev,
-        userAttempts: results.length,
-        avgScore,
-        badgeCount: user?.badges?.length || 0,
-      }));
-
-      // Recent activity: last 5 results
-      const sorted = [...results].sort(
-        (a, b) => new Date(b.completedAt) - new Date(a.completedAt),
-      );
-      setRecentActivity(sorted.slice(0, 5));
-=======
-      const results      = resultRes.data || [];
-      const valid        = results.filter(r => r.totalQuestions > 0);
-      const avgScore     = valid.length
-        ? Math.round(valid.reduce((s, r) => s + (r.score / r.totalQuestions) * 100, 0) / valid.length)
-        : 0;
-
-      setAllResults([...results].sort((a, b) => new Date(b.completedAt) - new Date(a.completedAt)));
-      setStats({
-        totalQuizzes: allQuizRes.data.length,
-        userAttempts: results.length,
-        avgScore,
-        badgeCount: user?.badges?.length || 0,
-      });
->>>>>>> c56f47f2f8243449a04853f4ec787dade8b571ca
-      setLastUpdated(new Date());
-      if (location.state?.selectedCategory) setSelectedCategory(location.state.selectedCategory);
-    } catch (err) {
-      console.error("Dashboard fetch error:", err);
-    } finally {
-      setLoading(false);
-      setIsRefreshing(false);
-    }
-  }, [user?.badges?.length, location.state]);
+        setAllResults(
+          [...results].sort(
+            (a, b) => new Date(b.completedAt) - new Date(a.completedAt),
+          ),
+        );
+        setStats({
+          totalQuizzes: allQuizRes.data.length,
+          userAttempts: results.length,
+          avgScore,
+          badgeCount: user?.badges?.length || 0,
+        });
+        setLastUpdated(new Date());
+        if (location.state?.selectedCategory)
+          setSelectedCategory(location.state.selectedCategory);
+      } catch (err) {
+        console.error("Dashboard fetch error:", err);
+      } finally {
+        setLoading(false);
+        setIsRefreshing(false);
+      }
+    },
+    [user?.badges?.length, location.state],
+  );
 
   useEffect(() => {
     fetchAll(false);
@@ -186,19 +210,24 @@ const Dashboard = () => {
 
   /* derived data */
   const categoryStats = categories
-    .map(cat => {
-      const catR = allResults.filter(r => r.category === cat && r.totalQuestions > 0);
-      const avg  = catR.length
-        ? Math.round(catR.reduce((s, r) => s + (r.score / r.totalQuestions) * 100, 0) / catR.length)
+    .map((cat) => {
+      const catR = allResults.filter(
+        (r) => r.category === cat && r.totalQuestions > 0,
+      );
+      const avg = catR.length
+        ? Math.round(
+            catR.reduce((s, r) => s + (r.score / r.totalQuestions) * 100, 0) /
+              catR.length,
+          )
         : null;
       return { cat, attempts: catR.length, avg };
     })
-    .filter(c => c.avg !== null)
+    .filter((c) => c.avg !== null)
     .sort((a, b) => b.avg - a.avg);
 
-  const diffDist = ["Basic", "Intermediate", "Hard"].map(diff => ({
+  const diffDist = ["Basic", "Intermediate", "Hard"].map((diff) => ({
     diff,
-    count: allResults.filter(r => r.difficulty === diff).length,
+    count: allResults.filter((r) => r.difficulty === diff).length,
   }));
   const totalAttempts = diffDist.reduce((s, d) => s + d.count, 0);
 
@@ -213,25 +242,40 @@ const Dashboard = () => {
 
   /* shared activity row renderer */
   const ActivityRow = ({ result, idx }) => {
-    const pct = result.totalQuestions > 0
-      ? Math.round((result.score / result.totalQuestions) * 100) : 0;
+    const pct =
+      result.totalQuestions > 0
+        ? Math.round((result.score / result.totalQuestions) * 100)
+        : 0;
     return (
       <div className="activity-row">
-        <div className="ar-emoji">{CATEGORY_EMOJI[result.category] || "📝"}</div>
+        <div className="ar-emoji">
+          {CATEGORY_EMOJI[result.category] || "📝"}
+        </div>
         <div className="ar-details">
           <span className="ar-cat">{result.category}</span>
-          <span className={`diff-badge diff-badge-${result.difficulty.toLowerCase()}`}>
+          <span
+            className={`diff-badge diff-badge-${result.difficulty.toLowerCase()}`}
+          >
             {result.difficulty}
           </span>
         </div>
         <div className="ar-bar">
           <div className="ar-bar-track">
-            <div className="ar-bar-fill" style={{ width: `${pct}%`, background: getScoreColor(pct) }} />
+            <div
+              className="ar-bar-fill"
+              style={{ width: `${pct}%`, background: getScoreColor(pct) }}
+            />
           </div>
-          <span className="ar-pct" style={{ color: getScoreColor(pct) }}>{pct}%</span>
+          <span className="ar-pct" style={{ color: getScoreColor(pct) }}>
+            {pct}%
+          </span>
         </div>
-        <span className="ar-frac">{result.score}/{result.totalQuestions}</span>
-        <span className="ar-time"><Clock size={11} /> {getTimeAgo(result.completedAt)}</span>
+        <span className="ar-frac">
+          {result.score}/{result.totalQuestions}
+        </span>
+        <span className="ar-time">
+          <Clock size={11} /> {getTimeAgo(result.completedAt)}
+        </span>
       </div>
     );
   };
@@ -302,10 +346,10 @@ const Dashboard = () => {
             <div className="user-topbar">
               <div className="user-topbar-left">
                 <h2 className="user-page-title">
-                  {activeTab === "overview"  && "📊 Overview"}
-                  {activeTab === "quiz"      && "📝 Take a Quiz"}
-                  {activeTab === "progress"  && "📈 My Progress"}
-                  {activeTab === "activity"  && "🕐 Activity Feed"}
+                  {activeTab === "overview" && "📊 Overview"}
+                  {activeTab === "quiz" && "📝 Take a Quiz"}
+                  {activeTab === "progress" && "📈 My Progress"}
+                  {activeTab === "activity" && "🕐 Activity Feed"}
                 </h2>
               </div>
               <div className="user-topbar-right">
@@ -313,7 +357,9 @@ const Dashboard = () => {
                   <span className="live-dot" /> Live
                 </div>
                 {lastUpdated && (
-                  <span className="last-updated">Updated: {lastUpdated.toLocaleTimeString()}</span>
+                  <span className="last-updated">
+                    Updated: {lastUpdated.toLocaleTimeString()}
+                  </span>
                 )}
                 <button
                   className={`btn-refresh ${isRefreshing ? "spinning" : ""}`}
@@ -323,7 +369,10 @@ const Dashboard = () => {
                   <RefreshCw size={16} />
                 </button>
                 {isAdmin && (
-                  <button className="btn-admin-jump" onClick={() => navigate("/admin")}>
+                  <button
+                    className="btn-admin-jump"
+                    onClick={() => navigate("/admin")}
+                  >
                     ⚙️ Admin Panel
                   </button>
                 )}
@@ -331,19 +380,48 @@ const Dashboard = () => {
             </div>
 
             <div className="user-main-body">
-
               {/* ═══════════════ OVERVIEW TAB ═══════════════ */}
               {activeTab === "overview" && (
                 <>
                   {/* Stat cards */}
                   <div className="user-stats-grid">
                     {[
-                      { icon: "📝", value: stats.totalQuizzes,   label: "Available Quizzes", accent: "purple" },
-                      { icon: "🏆", value: stats.userAttempts,   label: "Quiz Attempts",     accent: "blue"   },
-                      { icon: "🎯", value: `${stats.avgScore}%`, label: "Avg Score",          accent: "green"  },
-                      { icon: "🥇", value: stats.badgeCount,     label: "Badges Earned",      accent: "orange" },
-                      { icon: "📂", value: categories.length,    label: "Categories",         accent: "teal"   },
-                      { icon: "🔥", value: categoryStats.length, label: "Explored Topics",    accent: "red"    },
+                      {
+                        icon: "📝",
+                        value: stats.totalQuizzes,
+                        label: "Available Quizzes",
+                        accent: "purple",
+                      },
+                      {
+                        icon: "🏆",
+                        value: stats.userAttempts,
+                        label: "Quiz Attempts",
+                        accent: "blue",
+                      },
+                      {
+                        icon: "🎯",
+                        value: `${stats.avgScore}%`,
+                        label: "Avg Score",
+                        accent: "green",
+                      },
+                      {
+                        icon: "🥇",
+                        value: stats.badgeCount,
+                        label: "Badges Earned",
+                        accent: "orange",
+                      },
+                      {
+                        icon: "📂",
+                        value: categories.length,
+                        label: "Categories",
+                        accent: "teal",
+                      },
+                      {
+                        icon: "🔥",
+                        value: categoryStats.length,
+                        label: "Explored Topics",
+                        accent: "red",
+                      },
                     ].map(({ icon, value, label, accent }) => (
                       <div key={label} className={`user-stat-card ${accent}`}>
                         <div className="stat-icon">{icon}</div>
@@ -358,10 +436,15 @@ const Dashboard = () => {
                   {/* Welcome + score ring */}
                   <div className="overview-welcome-card">
                     <div className="ow-left">
-                      <p className="ow-hello">👋 Welcome back, <strong>{user.username}</strong></p>
+                      <p className="ow-hello">
+                        👋 Welcome back, <strong>{user.username}</strong>
+                      </p>
                       <h2 className="ow-headline">
-                        {stats.avgScore >= 70 ? "🌟 You're doing great!" :
-                         stats.avgScore >= 40 ? "💪 Keep pushing!" : "🚀 Let's level up!"}
+                        {stats.avgScore >= 70
+                          ? "🌟 You're doing great!"
+                          : stats.avgScore >= 40
+                            ? "💪 Keep pushing!"
+                            : "🚀 Let's level up!"}
                       </h2>
                       <p className="ow-sub">
                         {stats.userAttempts > 0
@@ -369,24 +452,47 @@ const Dashboard = () => {
                           : "Take your first quiz to start tracking your progress!"}
                       </p>
                       <div className="ow-actions">
-                        <button className="btn-ow-primary" onClick={() => setActiveTab("quiz")}>
+                        <button
+                          className="btn-ow-primary"
+                          onClick={() => setActiveTab("quiz")}
+                        >
                           <Play size={15} /> Take a Quiz
                         </button>
-                        <button className="btn-ow-ghost" onClick={() => navigate("/leaderboard")}>🏆 Leaderboard</button>
-                        <button className="btn-ow-ghost" onClick={() => navigate("/analytics")}>📊 Analytics</button>
+                        <button
+                          className="btn-ow-ghost"
+                          onClick={() => navigate("/leaderboard")}
+                        >
+                          🏆 Leaderboard
+                        </button>
+                        <button
+                          className="btn-ow-ghost"
+                          onClick={() => navigate("/analytics")}
+                        >
+                          📊 Analytics
+                        </button>
                       </div>
                     </div>
                     <div className="ow-right">
                       <div className="score-ring-wrap">
-                        <ProgressRing percentage={stats.avgScore} size={120} strokeWidth={11} />
+                        <ProgressRing
+                          percentage={stats.avgScore}
+                          size={120}
+                          strokeWidth={11}
+                        />
                         <div className="score-ring-inner">
-                          <span className="score-ring-value">{stats.avgScore}%</span>
+                          <span className="score-ring-value">
+                            {stats.avgScore}%
+                          </span>
                           <span className="score-ring-text">Avg Score</span>
                         </div>
                       </div>
                       <div className="ow-chips">
-                        <span className="ow-chip"><Trophy size={12} /> {stats.userAttempts} Attempts</span>
-                        <span className="ow-chip"><Award size={12} /> {stats.badgeCount} Badges</span>
+                        <span className="ow-chip">
+                          <Trophy size={12} /> {stats.userAttempts} Attempts
+                        </span>
+                        <span className="ow-chip">
+                          <Award size={12} /> {stats.badgeCount} Badges
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -397,14 +503,21 @@ const Dashboard = () => {
                       <h3>Your Difficulty Distribution</h3>
                       <div className="difficulty-bars">
                         {diffDist.map(({ diff, count }) => {
-                          const pct = totalAttempts ? Math.round((count / totalAttempts) * 100) : 0;
+                          const pct = totalAttempts
+                            ? Math.round((count / totalAttempts) * 100)
+                            : 0;
                           return (
                             <div key={diff} className="diff-bar-row">
                               <span className="diff-bar-label">{diff}</span>
                               <div className="diff-bar-track">
-                                <div className={`diff-bar-fill diff-bar-${diff.toLowerCase()}`} style={{ width: `${pct}%` }} />
+                                <div
+                                  className={`diff-bar-fill diff-bar-${diff.toLowerCase()}`}
+                                  style={{ width: `${pct}%` }}
+                                />
                               </div>
-                              <span className="diff-bar-count">{count} ({pct}%)</span>
+                              <span className="diff-bar-count">
+                                {count} ({pct}%)
+                              </span>
                             </div>
                           );
                         })}
@@ -417,20 +530,33 @@ const Dashboard = () => {
                     <div className="overview-card">
                       <div className="overview-card-header">
                         <h3>Category Performance</h3>
-                        <button className="btn-view-all" onClick={() => setActiveTab("progress")}>
+                        <button
+                          className="btn-view-all"
+                          onClick={() => setActiveTab("progress")}
+                        >
                           View All →
                         </button>
                       </div>
                       <div className="category-perf-grid">
-                        {categoryStats.slice(0, 8).map(({ cat, attempts, avg }) => (
-                          <div key={cat} className="cat-perf-chip">
-                            <span className="cat-perf-emoji">{CATEGORY_EMOJI[cat] || "📚"}</span>
-                            <span className="cat-perf-name">{cat}</span>
-                            <span className="cat-perf-badge" style={{ background: getScoreColor(avg) + "22", color: getScoreColor(avg) }}>
-                              {avg}%
-                            </span>
-                          </div>
-                        ))}
+                        {categoryStats
+                          .slice(0, 8)
+                          .map(({ cat, attempts, avg }) => (
+                            <div key={cat} className="cat-perf-chip">
+                              <span className="cat-perf-emoji">
+                                {CATEGORY_EMOJI[cat] || "📚"}
+                              </span>
+                              <span className="cat-perf-name">{cat}</span>
+                              <span
+                                className="cat-perf-badge"
+                                style={{
+                                  background: getScoreColor(avg) + "22",
+                                  color: getScoreColor(avg),
+                                }}
+                              >
+                                {avg}%
+                              </span>
+                            </div>
+                          ))}
                       </div>
                     </div>
                   )}
@@ -443,17 +569,30 @@ const Dashboard = () => {
                         {recommendations.map((rec, idx) => (
                           <div key={idx} className="rec-card">
                             <div className="rec-card-top">
-                              <span className="rec-emoji">{CATEGORY_EMOJI[rec.category] || "📚"}</span>
-                              <span className={`diff-badge diff-badge-${rec.difficulty.toLowerCase()}`}>
+                              <span className="rec-emoji">
+                                {CATEGORY_EMOJI[rec.category] || "📚"}
+                              </span>
+                              <span
+                                className={`diff-badge diff-badge-${rec.difficulty.toLowerCase()}`}
+                              >
                                 {rec.difficulty}
                               </span>
                             </div>
                             <p className="rec-name">{rec.category}</p>
-                            <p className="rec-score-text">Your avg: {rec.avgScore}%</p>
+                            <p className="rec-score-text">
+                              Your avg: {rec.avgScore}%
+                            </p>
                             <p className="rec-reason">{rec.reason}</p>
                             <button
                               className="btn-rec-practice"
-                              onClick={() => navigate("/quiz", { state: { category: rec.category, difficulty: rec.difficulty } })}
+                              onClick={() =>
+                                navigate("/quiz", {
+                                  state: {
+                                    category: rec.category,
+                                    difficulty: rec.difficulty,
+                                  },
+                                })
+                              }
                             >
                               <Play size={13} /> Practice
                             </button>
@@ -468,12 +607,17 @@ const Dashboard = () => {
                     <div className="overview-card">
                       <div className="overview-card-header">
                         <h3>🕐 Recent Activity</h3>
-                        <button className="btn-view-all" onClick={() => setActiveTab("activity")}>
+                        <button
+                          className="btn-view-all"
+                          onClick={() => setActiveTab("activity")}
+                        >
                           View All →
                         </button>
                       </div>
                       <div className="activity-feed">
-                        {allResults.slice(0, 5).map((r, idx) => <ActivityRow key={idx} result={r} idx={idx} />)}
+                        {allResults.slice(0, 5).map((r, idx) => (
+                          <ActivityRow key={idx} result={r} idx={idx} />
+                        ))}
                       </div>
                     </div>
                   )}
@@ -490,18 +634,39 @@ const Dashboard = () => {
                         <p>Choose a technology to test your skills</p>
                       </div>
                       <div className="category-cards-grid">
-                        {categories.map(cat => {
-                          const catR = allResults.filter(r => r.category === cat && r.totalQuestions > 0);
-                          const avg  = catR.length
-                            ? Math.round(catR.reduce((s, r) => s + (r.score / r.totalQuestions) * 100, 0) / catR.length)
+                        {categories.map((cat) => {
+                          const catR = allResults.filter(
+                            (r) => r.category === cat && r.totalQuestions > 0,
+                          );
+                          const avg = catR.length
+                            ? Math.round(
+                                catR.reduce(
+                                  (s, r) =>
+                                    s + (r.score / r.totalQuestions) * 100,
+                                  0,
+                                ) / catR.length,
+                              )
                             : null;
                           return (
-                            <button key={cat} className="category-card" onClick={() => setSelectedCategory(cat)}>
-                              <span className="cat-card-emoji">{CATEGORY_EMOJI[cat] || "📚"}</span>
+                            <button
+                              key={cat}
+                              className="category-card"
+                              onClick={() => setSelectedCategory(cat)}
+                            >
+                              <span className="cat-card-emoji">
+                                {CATEGORY_EMOJI[cat] || "📚"}
+                              </span>
                               <span className="cat-card-name">{cat}</span>
-                              {avg !== null
-                                ? <span className="cat-card-avg" style={{ color: getScoreColor(avg) }}>Avg: {avg}%</span>
-                                : <span className="cat-card-new">New!</span>}
+                              {avg !== null ? (
+                                <span
+                                  className="cat-card-avg"
+                                  style={{ color: getScoreColor(avg) }}
+                                >
+                                  Avg: {avg}%
+                                </span>
+                              ) : (
+                                <span className="cat-card-new">New!</span>
+                              )}
                             </button>
                           );
                         })}
@@ -510,14 +675,19 @@ const Dashboard = () => {
                   ) : (
                     <div className="quiz-setup-panel">
                       <div className="quiz-setup-banner">
-                        <span className="setup-emoji">{CATEGORY_EMOJI[selectedCategory] || "📚"}</span>
+                        <span className="setup-emoji">
+                          {CATEGORY_EMOJI[selectedCategory] || "📚"}
+                        </span>
                         <div>
                           <h3>{selectedCategory}</h3>
                           <p>Select difficulty to continue</p>
                         </div>
                         <button
                           className="btn-change-cat"
-                          onClick={() => { setSelectedCategory(""); setSelectedDifficulty(""); }}
+                          onClick={() => {
+                            setSelectedCategory("");
+                            setSelectedDifficulty("");
+                          }}
                         >
                           ← Change
                         </button>
@@ -525,28 +695,48 @@ const Dashboard = () => {
 
                       <p className="diff-pick-label">Choose Difficulty</p>
                       <div className="diff-buttons-row">
-                        {DIFFICULTIES.map(({ label, emoji, color, bg, border }) => (
-                          <button
-                            key={label}
-                            className={`btn-diff-card ${selectedDifficulty === label ? "active" : ""}`}
-                            style={selectedDifficulty === label ? { background: bg, borderColor: border, color } : {}}
-                            onClick={() => setSelectedDifficulty(label)}
-                          >
-                            <span className="diff-card-emoji">{emoji}</span>
-                            <span className="diff-card-label">{label}</span>
-                          </button>
-                        ))}
+                        {DIFFICULTIES.map(
+                          ({ label, emoji, color, bg, border }) => (
+                            <button
+                              key={label}
+                              className={`btn-diff-card ${selectedDifficulty === label ? "active" : ""}`}
+                              style={
+                                selectedDifficulty === label
+                                  ? {
+                                      background: bg,
+                                      borderColor: border,
+                                      color,
+                                    }
+                                  : {}
+                              }
+                              onClick={() => setSelectedDifficulty(label)}
+                            >
+                              <span className="diff-card-emoji">{emoji}</span>
+                              <span className="diff-card-label">{label}</span>
+                            </button>
+                          ),
+                        )}
                       </div>
 
                       {selectedDifficulty && (
                         <div className="quiz-action-row">
-                          <div className={`quiz-count-badge ${quizCount > 0 ? "count-green" : "count-red"}`}>
-                            {quizCount > 0
-                              ? <><BookOpen size={15} /> {quizCount} question{quizCount !== 1 ? "s" : ""} available</>
-                              : "❌ No questions available for this selection"}
+                          <div
+                            className={`quiz-count-badge ${quizCount > 0 ? "count-green" : "count-red"}`}
+                          >
+                            {quizCount > 0 ? (
+                              <>
+                                <BookOpen size={15} /> {quizCount} question
+                                {quizCount !== 1 ? "s" : ""} available
+                              </>
+                            ) : (
+                              "❌ No questions available for this selection"
+                            )}
                           </div>
                           {quizCount > 0 && (
-                            <button className="btn-start-quiz" onClick={handleStartQuiz}>
+                            <button
+                              className="btn-start-quiz"
+                              onClick={handleStartQuiz}
+                            >
                               <Play size={16} /> Start Quiz
                             </button>
                           )}
@@ -566,7 +756,10 @@ const Dashboard = () => {
                         🎯 Complete some quizzes to see your progress!
                       </p>
                       <div style={{ textAlign: "center", marginTop: 16 }}>
-                        <button className="btn-ow-primary" onClick={() => setActiveTab("quiz")}>
+                        <button
+                          className="btn-ow-primary"
+                          onClick={() => setActiveTab("quiz")}
+                        >
                           <Play size={15} /> Start a Quiz
                         </button>
                       </div>
@@ -580,17 +773,33 @@ const Dashboard = () => {
                           {categoryStats.map(({ cat, attempts, avg }) => (
                             <div key={cat} className="cat-progress-row">
                               <div className="cpr-left">
-                                <span className="cpr-emoji">{CATEGORY_EMOJI[cat] || "📚"}</span>
+                                <span className="cpr-emoji">
+                                  {CATEGORY_EMOJI[cat] || "📚"}
+                                </span>
                                 <div>
                                   <span className="cpr-name">{cat}</span>
-                                  <span className="cpr-attempts">{attempts} attempt{attempts !== 1 ? "s" : ""}</span>
+                                  <span className="cpr-attempts">
+                                    {attempts} attempt
+                                    {attempts !== 1 ? "s" : ""}
+                                  </span>
                                 </div>
                               </div>
                               <div className="cpr-bar-wrap">
                                 <div className="cpr-bar-track">
-                                  <div className="cpr-bar-fill" style={{ width: `${avg}%`, background: getScoreColor(avg) }} />
+                                  <div
+                                    className="cpr-bar-fill"
+                                    style={{
+                                      width: `${avg}%`,
+                                      background: getScoreColor(avg),
+                                    }}
+                                  />
                                 </div>
-                                <span className="cpr-pct" style={{ color: getScoreColor(avg) }}>{avg}%</span>
+                                <span
+                                  className="cpr-pct"
+                                  style={{ color: getScoreColor(avg) }}
+                                >
+                                  {avg}%
+                                </span>
                               </div>
                             </div>
                           ))}
@@ -602,26 +811,47 @@ const Dashboard = () => {
                         <h3>📈 Recent Scores (Last 10)</h3>
                         <div className="score-history-list">
                           {allResults.slice(0, 10).map((r, idx) => {
-                            const pct = r.totalQuestions > 0
-                              ? Math.round((r.score / r.totalQuestions) * 100) : 0;
+                            const pct =
+                              r.totalQuestions > 0
+                                ? Math.round((r.score / r.totalQuestions) * 100)
+                                : 0;
                             return (
                               <div key={idx} className="score-history-row">
                                 <span className="shr-idx">#{idx + 1}</span>
-                                <span className="shr-emoji">{CATEGORY_EMOJI[r.category] || "📚"}</span>
+                                <span className="shr-emoji">
+                                  {CATEGORY_EMOJI[r.category] || "📚"}
+                                </span>
                                 <div className="shr-info">
                                   <span className="shr-cat">{r.category}</span>
-                                  <span className={`diff-badge diff-badge-${r.difficulty.toLowerCase()}`}>
+                                  <span
+                                    className={`diff-badge diff-badge-${r.difficulty.toLowerCase()}`}
+                                  >
                                     {r.difficulty}
                                   </span>
                                 </div>
                                 <div className="shr-bar-wrap">
                                   <div className="shr-bar-track">
-                                    <div className="shr-bar-fill" style={{ width: `${pct}%`, background: getScoreColor(pct) }} />
+                                    <div
+                                      className="shr-bar-fill"
+                                      style={{
+                                        width: `${pct}%`,
+                                        background: getScoreColor(pct),
+                                      }}
+                                    />
                                   </div>
                                 </div>
-                                <span className="shr-score" style={{ color: getScoreColor(pct) }}>{pct}%</span>
-                                <span className="shr-frac">{r.score}/{r.totalQuestions}</span>
-                                <span className="shr-time">{getTimeAgo(r.completedAt)}</span>
+                                <span
+                                  className="shr-score"
+                                  style={{ color: getScoreColor(pct) }}
+                                >
+                                  {pct}%
+                                </span>
+                                <span className="shr-frac">
+                                  {r.score}/{r.totalQuestions}
+                                </span>
+                                <span className="shr-time">
+                                  {getTimeAgo(r.completedAt)}
+                                </span>
                               </div>
                             );
                           })}
@@ -633,9 +863,16 @@ const Dashboard = () => {
                         <div className="overview-card">
                           <h3>🏆 Best Category</h3>
                           <div className="summary-stat-card">
-                            <span className="ss-emoji">{CATEGORY_EMOJI[categoryStats[0].cat] || "📚"}</span>
+                            <span className="ss-emoji">
+                              {CATEGORY_EMOJI[categoryStats[0].cat] || "📚"}
+                            </span>
                             <p className="ss-name">{categoryStats[0].cat}</p>
-                            <p className="ss-score" style={{ color: getScoreColor(categoryStats[0].avg) }}>
+                            <p
+                              className="ss-score"
+                              style={{
+                                color: getScoreColor(categoryStats[0].avg),
+                              }}
+                            >
                               {categoryStats[0].avg}%
                             </p>
                           </div>
@@ -644,9 +881,22 @@ const Dashboard = () => {
                           <div className="overview-card">
                             <h3>📉 Needs Work</h3>
                             <div className="summary-stat-card">
-                              <span className="ss-emoji">{CATEGORY_EMOJI[categoryStats[categoryStats.length - 1].cat] || "📚"}</span>
-                              <p className="ss-name">{categoryStats[categoryStats.length - 1].cat}</p>
-                              <p className="ss-score" style={{ color: getScoreColor(categoryStats[categoryStats.length - 1].avg) }}>
+                              <span className="ss-emoji">
+                                {CATEGORY_EMOJI[
+                                  categoryStats[categoryStats.length - 1].cat
+                                ] || "📚"}
+                              </span>
+                              <p className="ss-name">
+                                {categoryStats[categoryStats.length - 1].cat}
+                              </p>
+                              <p
+                                className="ss-score"
+                                style={{
+                                  color: getScoreColor(
+                                    categoryStats[categoryStats.length - 1].avg,
+                                  ),
+                                }}
+                              >
                                 {categoryStats[categoryStats.length - 1].avg}%
                               </p>
                             </div>
@@ -656,7 +906,12 @@ const Dashboard = () => {
                           <h3>📊 Total Attempts</h3>
                           <div className="summary-stat-card">
                             <span className="ss-emoji">🎯</span>
-                            <p className="ss-score" style={{ color: "#7c3aed" }}>{stats.userAttempts}</p>
+                            <p
+                              className="ss-score"
+                              style={{ color: "#7c3aed" }}
+                            >
+                              {stats.userAttempts}
+                            </p>
                             <p className="ss-name">quizzes completed</p>
                           </div>
                         </div>
@@ -671,20 +926,26 @@ const Dashboard = () => {
                 <div className="overview-card">
                   <div className="overview-card-header">
                     <h3>🕐 All Activity</h3>
-                    <button className="btn-view-all" onClick={() => navigate("/history")}>
+                    <button
+                      className="btn-view-all"
+                      onClick={() => navigate("/history")}
+                    >
                       Full History →
                     </button>
                   </div>
                   {allResults.length === 0 ? (
-                    <p className="no-data-msg">No quiz activity yet. Take your first quiz!</p>
+                    <p className="no-data-msg">
+                      No quiz activity yet. Take your first quiz!
+                    </p>
                   ) : (
                     <div className="activity-feed">
-                      {allResults.map((r, idx) => <ActivityRow key={idx} result={r} idx={idx} />)}
+                      {allResults.map((r, idx) => (
+                        <ActivityRow key={idx} result={r} idx={idx} />
+                      ))}
                     </div>
                   )}
                 </div>
               )}
-
             </div>
           </div>
         </div>
