@@ -45,11 +45,11 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const register = async (username, password) => {
+  const register = async (username, email, password) => {
     try {
       setError(null);
 
-      await authAPI.register(username, password);
+      await authAPI.register(username, email, password);
       return { success: true };
     } catch (err) {
       const message = err.response?.data?.message || "Registration failed";

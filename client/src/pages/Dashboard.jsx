@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import Sidebar from "../components/Sidebar";
+import TopBar from "../components/TopBar";
 import { quizAPI, resultAPI } from "../services/api";
 import "../styles/Dashboard.css";
 import {
@@ -291,6 +292,13 @@ const Dashboard = () => {
       />
 
       <div className="main-content">
+        <TopBar
+          categories={categories}
+          onCategorySelect={(cat) => {
+            setSelectedCategory(cat);
+            setActiveTab("quiz");
+          }}
+        />
         <div className="main-content-body">
           {/* Live Stats Bar */}
           <div className="live-stats-bar">

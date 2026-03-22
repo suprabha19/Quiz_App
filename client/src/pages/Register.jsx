@@ -5,6 +5,7 @@ import "../styles/Auth.css";
 
 const Register = () => {
   const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
@@ -17,8 +18,15 @@ const Register = () => {
     setError("");
     setLoading(true);
 
-    if (!username || !password || !confirmPassword) {
+    if (!username || !email || !password || !confirmPassword) {
       setError("Please fill in all fields");
+      setLoading(false);
+      return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+    if (!emailRegex.test(email)) {
+      setError("Please enter a valid email address");
       setLoading(false);
       return;
     }
@@ -35,7 +43,7 @@ const Register = () => {
       return;
     }
 
-    const result = await register(username, password);
+    const result = await register(username, email, password);
     setLoading(false);
 
     if (result.success) {
@@ -61,6 +69,17 @@ const Register = () => {
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               placeholder="Choose a username"
+              disabled={loading}
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="email">Email</label>
+            <input
+              type="email"
+              id="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Enter your email address"
               disabled={loading}
             />
           </div>
