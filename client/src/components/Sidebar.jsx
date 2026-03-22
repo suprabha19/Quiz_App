@@ -112,7 +112,7 @@ const Sidebar = ({ categories, selectedCategory, setSelectedCategory }) => {
         >
           🏠 Dashboard
         </button>
-        
+
         <button
           className={`sidebar-nav-item ${isQuizzesExpanded ? "expanded" : ""}`}
           onClick={() => setIsQuizzesExpanded(!isQuizzesExpanded)}
