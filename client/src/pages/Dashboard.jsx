@@ -157,7 +157,7 @@ const Dashboard = () => {
     } catch (error) {
       console.error("Error fetching quiz count:", error);
       const res = await quizAPI.getQuizzesByFilter(selectedCategory, selectedDifficulty);
-      setQuizCount(res.data.length);
+      setQuizCount(res.data.length)
     } catch (err) {
       console.error(err);
     }
