@@ -52,31 +52,24 @@ import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import {
-  Code2,
-  Layout,
-  Braces,
-  Atom,
-  Server,
-  Database,
-  Coffee,
-  Terminal,
   ChevronRight,
-  BookOpen,
   ChevronDown,
+  LogOut,
+  Home,
+  BarChart2,
+  History,
+  Trophy,
+  BookOpen,
 } from "lucide-react";
 import "../styles/Sidebar.css";
 
-const iconMap = {
-  HTML: Code2,
-  CSS: Layout,
-  JavaScript: Braces,
-  React: Atom,
-  "Node.js": Server,
-  Nodejs: Server,
-  MongoDB: Database,
-  Java: Coffee,
-  Python: Terminal,
+const CATEGORY_EMOJI = {
+  HTML: "🌐", CSS: "🎨", JavaScript: "⚡", React: "⚛️",
+  "Node.js": "🟢", Nodejs: "🟢", MongoDB: "🍃", Java: "☕", Python: "🐍",
 };
+
+const getInitials = (name = "") =>
+  name.trim().slice(0, 2).toUpperCase() || "U";
 
 const Sidebar = ({ categories, selectedCategory, setSelectedCategory }) => {
   const { user, logout } = useAuth();
@@ -90,39 +83,36 @@ const Sidebar = ({ categories, selectedCategory, setSelectedCategory }) => {
 
   return (
     <div className="sidebar">
-      {/* top card */}
-      <div className="sidebar-top-card">
-        <div className="top-icon">
-          <BookOpen size={18} />
+      {/* Brand */}
+      <div className="sidebar-brand">
+        <div className="brand-icon-wrap">
+          <BookOpen size={20} />
         </div>
-
         <div>
-          <h3>QuizSphere</h3>
-          <p>Test your knowledge & improve skills</p>
+          <h3 className="brand-name">QuizSphere</h3>
+          <p className="brand-tagline">Level up your knowledge</p>
         </div>
       </div>
 
-      <div className="sidebar-nav">
+      {/* Nav */}
+      <nav className="sidebar-nav">
         <button
           className="sidebar-nav-item"
-          onClick={() => {
-            setSelectedCategory("");
-            navigate("/dashboard");
-          }}
+          onClick={() => { setSelectedCategory(""); navigate("/dashboard"); }}
         >
-          🏠 Dashboard
+          <Home size={17} className="nav-item-icon" />
+          <span>Dashboard</span>
         </button>
 
         <button
           className={`sidebar-nav-item ${isQuizzesExpanded ? "expanded" : ""}`}
           onClick={() => setIsQuizzesExpanded(!isQuizzesExpanded)}
         >
-          <span>📝 Quizzes</span>
-          {isQuizzesExpanded ? (
-            <ChevronDown size={18} className="chevron-icon" />
-          ) : (
-            <ChevronRight size={18} className="chevron-icon" />
-          )}
+          <BookOpen size={17} className="nav-item-icon" />
+          <span>Quizzes</span>
+          {isQuizzesExpanded
+            ? <ChevronDown size={15} className="chevron-icon" />
+            : <ChevronRight size={15} className="chevron-icon" />}
         </button>
 
         {isQuizzesExpanded && (
@@ -134,11 +124,9 @@ const Sidebar = ({ categories, selectedCategory, setSelectedCategory }) => {
                 <button
                   key={category}
                   className={`subsection-item ${selectedCategory === category ? "active" : ""}`}
-                  onClick={() => {
-                    setSelectedCategory(category);
-                    navigate("/dashboard");
-                  }}
+                  onClick={() => { setSelectedCategory(category); navigate("/dashboard"); }}
                 >
+                  <span className="sub-emoji">{CATEGORY_EMOJI[category] || "📚"}</span>
                   {category}
                 </button>
               ))
@@ -146,36 +134,33 @@ const Sidebar = ({ categories, selectedCategory, setSelectedCategory }) => {
           </div>
         )}
 
-        <button
-          className="sidebar-nav-item"
-          onClick={() => navigate("/analytics")}
-        >
-          📊 Analytics
+        <button className="sidebar-nav-item" onClick={() => navigate("/analytics")}>
+          <BarChart2 size={17} className="nav-item-icon" />
+          <span>Analytics</span>
         </button>
-        <button
-          className="sidebar-nav-item"
-          onClick={() => navigate("/history")}
-        >
-          📋 My History
+        <button className="sidebar-nav-item" onClick={() => navigate("/history")}>
+          <History size={17} className="nav-item-icon" />
+          <span>My History</span>
         </button>
-        <button
-          className="sidebar-nav-item"
-          onClick={() => navigate("/leaderboard")}
-        >
-          🏆 Leaderboard
+        <button className="sidebar-nav-item" onClick={() => navigate("/leaderboard")}>
+          <Trophy size={17} className="nav-item-icon" />
+          <span>Leaderboard</span>
         </button>
-      </div>
+      </nav>
 
+      {/* Footer – user info */}
       <div className="sidebar-footer">
-        <div className="user-info">
-          <p className="username">{user.username}</p>
-          <span className="role">
-            {user.role === "admin" ? "Admin" : "User"}
-          </span>
+        <div className="sidebar-user-row">
+          <div className="sidebar-avatar">{getInitials(user.username)}</div>
+          <div className="sidebar-user-info">
+            <p className="sidebar-username">{user.username}</p>
+            <span className="sidebar-role-badge">
+              {user.role === "admin" ? "Admin" : "User"}
+            </span>
+          </div>
         </div>
-
         <button className="btn-logout" onClick={handleLogout}>
-          Logout
+          <LogOut size={15} /> Logout
         </button>
       </div>
     </div>
