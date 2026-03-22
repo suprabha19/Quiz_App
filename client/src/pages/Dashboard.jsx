@@ -15,7 +15,12 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true);
   const [recommendations, setRecommendations] = useState([]);
   // Real-time stats
-  const [stats, setStats] = useState({ totalQuizzes: 0, userAttempts: 0, avgScore: 0, badgeCount: 0 });
+  const [stats, setStats] = useState({
+    totalQuizzes: 0,
+    userAttempts: 0,
+    avgScore: 0,
+    badgeCount: 0,
+  });
   const [recentActivity, setRecentActivity] = useState([]);
   const [lastUpdated, setLastUpdated] = useState(null);
   const refreshIntervalRef = useRef(null);
@@ -38,12 +43,18 @@ const Dashboard = () => {
       setRecommendations(recRes.data);
 
       const results = resultRes.data || [];
-      const validResults = results.filter(r => r.totalQuestions > 0);
-      const avgScore = validResults.length > 0
-        ? Math.round(validResults.reduce((s, r) => s + (r.score / r.totalQuestions) * 100, 0) / validResults.length)
-        : 0;
+      const validResults = results.filter((r) => r.totalQuestions > 0);
+      const avgScore =
+        validResults.length > 0
+          ? Math.round(
+              validResults.reduce(
+                (s, r) => s + (r.score / r.totalQuestions) * 100,
+                0,
+              ) / validResults.length,
+            )
+          : 0;
 
-      setStats(prev => ({
+      setStats((prev) => ({
         ...prev,
         userAttempts: results.length,
         avgScore,
@@ -51,7 +62,9 @@ const Dashboard = () => {
       }));
 
       // Recent activity: last 5 results
-      const sorted = [...results].sort((a, b) => new Date(b.completedAt) - new Date(a.completedAt));
+      const sorted = [...results].sort(
+        (a, b) => new Date(b.completedAt) - new Date(a.completedAt),
+      );
       setRecentActivity(sorted.slice(0, 5));
       setLastUpdated(new Date());
     } catch (error) {
@@ -65,7 +78,10 @@ const Dashboard = () => {
         await fetchLiveData();
         // Also get total quiz count
         const allQuizzesRes = await quizAPI.getAllQuizzes();
-        setStats(prev => ({ ...prev, totalQuizzes: allQuizzesRes.data.length }));
+        setStats((prev) => ({
+          ...prev,
+          totalQuizzes: allQuizzesRes.data.length,
+        }));
 
         if (location.state?.selectedCategory) {
           setSelectedCategory(location.state.selectedCategory);
@@ -79,7 +95,10 @@ const Dashboard = () => {
     fetchInitial();
 
     // Auto-refresh every 30 seconds
-    refreshIntervalRef.current = setInterval(fetchLiveData, REFRESH_INTERVAL_MS);
+    refreshIntervalRef.current = setInterval(
+      fetchLiveData,
+      REFRESH_INTERVAL_MS,
+    );
     return () => clearInterval(refreshIntervalRef.current);
   }, [fetchLiveData, location.state]);
 
@@ -91,7 +110,10 @@ const Dashboard = () => {
 
   const fetchQuizCount = async () => {
     try {
-      const response = await quizAPI.getQuizzesByFilter(selectedCategory, selectedDifficulty);
+      const response = await quizAPI.getQuizzesByFilter(
+        selectedCategory,
+        selectedDifficulty,
+      );
       setQuizCount(response.data.length);
     } catch (error) {
       console.error("Error fetching quiz count:", error);
@@ -100,7 +122,9 @@ const Dashboard = () => {
 
   const handleStartQuiz = () => {
     if (selectedCategory && selectedDifficulty) {
-      navigate("/quiz", { state: { category: selectedCategory, difficulty: selectedDifficulty } });
+      navigate("/quiz", {
+        state: { category: selectedCategory, difficulty: selectedDifficulty },
+      });
     }
   };
 
@@ -130,7 +154,9 @@ const Dashboard = () => {
               <span className="live-indicator-dot"></span>
               <span className="live-label">Live Stats</span>
               {lastUpdated && (
-                <span className="stats-updated">Updated {lastUpdated.toLocaleTimeString()}</span>
+                <span className="stats-updated">
+                  Updated {lastUpdated.toLocaleTimeString()}
+                </span>
               )}
             </div>
             <div className="live-stats-cards">
@@ -190,14 +216,17 @@ const Dashboard = () => {
                 </div>
                 <h2 className="welcome-title">Welcome to Tech QuizSphere</h2>
                 <p className="welcome-subtitle">
-                  Select a technology from the sidebar to start your quiz journey.
-                  Test your knowledge at basic, intermediate, or advanced levels.
+                  Select a technology from the sidebar to start your quiz
+                  journey. Test your knowledge at basic, intermediate, or
+                  advanced levels.
                 </p>
                 <div className="welcome-features">
                   <div className="feature-box">
                     <Star color="black" size={18} />
                     <h4>Multiple Technologies</h4>
-                    <p>HTML, CSS, JavaScript, React, Node.js, Python and more</p>
+                    <p>
+                      HTML, CSS, JavaScript, React, Node.js, Python and more
+                    </p>
                   </div>
                   <div className="feature-box">
                     <Zap color="black" size={18} />
@@ -211,7 +240,8 @@ const Dashboard = () => {
                   </div>
                 </div>
                 <div className="welcome-footer">
-                  <Stars size={14} /> Select any technology to begin your learning adventure!
+                  <Stars size={14} /> Select any technology to begin your
+                  learning adventure!
                 </div>
               </div>
             ) : (
@@ -241,7 +271,10 @@ const Dashboard = () => {
                         : "No questions available for this selection"}
                     </p>
                     {quizCount > 0 && (
-                      <button className="btn-start-quiz" onClick={handleStartQuiz}>
+                      <button
+                        className="btn-start-quiz"
+                        onClick={handleStartQuiz}
+                      >
                         Start Quiz
                       </button>
                     )}
@@ -259,14 +292,23 @@ const Dashboard = () => {
                 {recommendations.map((rec, idx) => (
                   <div key={idx} className="rec-card">
                     <div className="rec-category">{rec.category}</div>
-                    <div className={`rec-difficulty difficulty-${rec.difficulty.toLowerCase()}`}>
+                    <div
+                      className={`rec-difficulty difficulty-${rec.difficulty.toLowerCase()}`}
+                    >
                       {rec.difficulty}
                     </div>
                     <div className="rec-score">Your avg: {rec.avgScore}%</div>
                     <div className="rec-reason">{rec.reason}</div>
                     <button
                       className="btn-start-quiz rec-btn"
-                      onClick={() => navigate("/quiz", { state: { category: rec.category, difficulty: rec.difficulty } })}
+                      onClick={() =>
+                        navigate("/quiz", {
+                          state: {
+                            category: rec.category,
+                            difficulty: rec.difficulty,
+                          },
+                        })
+                      }
                     >
                       Practice Now
                     </button>
@@ -281,27 +323,39 @@ const Dashboard = () => {
             <div className="recent-activity-section">
               <div className="recent-activity-header">
                 <h2>🕐 Recent Activity</h2>
-                <button className="btn-view-history" onClick={() => navigate("/history")}>
+                <button
+                  className="btn-view-history"
+                  onClick={() => navigate("/history")}
+                >
                   View Full History →
                 </button>
               </div>
               <div className="recent-activity-list">
                 {recentActivity.map((result, idx) => {
-                  const pct = result.totalQuestions > 0
-                    ? Math.round((result.score / result.totalQuestions) * 100)
-                    : 0;
+                  const pct =
+                    result.totalQuestions > 0
+                      ? Math.round((result.score / result.totalQuestions) * 100)
+                      : 0;
                   return (
                     <div key={idx} className="activity-item">
                       <div className="activity-category-icon">📝</div>
                       <div className="activity-details">
                         <span className="activity-cat">{result.category}</span>
-                        <span className={`activity-diff difficulty-${result.difficulty.toLowerCase()}`}>
+                        <span
+                          className={`activity-diff difficulty-${result.difficulty.toLowerCase()}`}
+                        >
                           {result.difficulty}
                         </span>
                       </div>
                       <div className="activity-score">
-                        <span className="score-fraction">{result.score}/{result.totalQuestions}</span>
-                        <span className={`score-pct ${pct >= 70 ? 'good-score' : 'low-score'}`}>{pct}%</span>
+                        <span className="score-fraction">
+                          {result.score}/{result.totalQuestions}
+                        </span>
+                        <span
+                          className={`score-pct ${pct >= 70 ? "good-score" : "low-score"}`}
+                        >
+                          {pct}%
+                        </span>
                       </div>
                       <div className="activity-time">
                         {new Date(result.completedAt).toLocaleDateString()}
