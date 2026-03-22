@@ -31,6 +31,7 @@ const AdminDashboard = () => {
   const { user: currentUser } = useAuth();
   const refreshIntervalRef = useRef(null);
 
+  const REFRESH_INTERVAL_MS = 30000;
   const difficulties = ['All', 'Basic', 'Intermediate', 'Hard'];
 
   const addActivity = useCallback((message, type = 'info') => {
@@ -66,7 +67,7 @@ const AdminDashboard = () => {
   useEffect(() => {
     fetchAll(false);
     // Auto-refresh every 30 seconds
-    refreshIntervalRef.current = setInterval(() => fetchAll(true), 30000);
+    refreshIntervalRef.current = setInterval(() => fetchAll(true), REFRESH_INTERVAL_MS);
     return () => clearInterval(refreshIntervalRef.current);
   }, [fetchAll]);
 
@@ -149,9 +150,9 @@ const AdminDashboard = () => {
   };
 
   // Overview stats
-  const avgScore = results.length > 0
-    ? Math.round(results.filter(r => r.totalQuestions > 0)
-        .reduce((s, r) => s + (r.score / r.totalQuestions) * 100, 0) / results.filter(r => r.totalQuestions > 0).length)
+  const validResults = results.filter(r => r.totalQuestions > 0);
+  const avgScore = validResults.length > 0
+    ? Math.round(validResults.reduce((s, r) => s + (r.score / r.totalQuestions) * 100, 0) / validResults.length)
     : 0;
   const recentResults = [...results].sort((a, b) => new Date(b.completedAt) - new Date(a.completedAt)).slice(0, 5);
 

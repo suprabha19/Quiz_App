@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import Sidebar from "../components/Sidebar";
@@ -24,9 +24,10 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
+  const REFRESH_INTERVAL_MS = 30000;
   const difficulties = ["Basic", "Intermediate", "Hard"];
 
-  const fetchLiveData = async () => {
+  const fetchLiveData = useCallback(async () => {
     try {
       const [catRes, recRes, resultRes] = await Promise.all([
         quizAPI.getCategories(),
@@ -56,7 +57,7 @@ const Dashboard = () => {
     } catch (error) {
       console.error("Error fetching dashboard data:", error);
     }
-  };
+  }, [user?.badges?.length]);
 
   useEffect(() => {
     const fetchInitial = async () => {
@@ -78,9 +79,9 @@ const Dashboard = () => {
     fetchInitial();
 
     // Auto-refresh every 30 seconds
-    refreshIntervalRef.current = setInterval(fetchLiveData, 30000);
+    refreshIntervalRef.current = setInterval(fetchLiveData, REFRESH_INTERVAL_MS);
     return () => clearInterval(refreshIntervalRef.current);
-  }, [location.state]);
+  }, [fetchLiveData, location.state]);
 
   useEffect(() => {
     if (selectedCategory && selectedDifficulty) {
