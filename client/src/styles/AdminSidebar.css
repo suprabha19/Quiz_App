@@ -1,0 +1,140 @@
+.admin-sidebar {
+  width: 260px;
+  min-width: 260px;
+  background: #1e1e2e;
+  color: #cdd6f4;
+  height: 100vh;
+  position: sticky;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 20px 14px;
+  font-family: 'Inter', sans-serif;
+}
+
+.admin-sidebar-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  background: rgba(255,255,255,0.07);
+  border-radius: 12px;
+  margin-bottom: 24px;
+}
+
+.admin-brand-icon {
+  background: #7c3aed;
+  padding: 8px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.admin-sidebar-brand h3 {
+  font-size: 17px;
+  font-weight: 700;
+  margin: 0;
+  color: #cdd6f4;
+}
+
+.admin-sidebar-brand p {
+  font-size: 12px;
+  color: #a6adc8;
+  margin: 0;
+}
+
+.admin-sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.admin-nav-item {
+  width: 100%;
+  background: transparent;
+  border: none;
+  padding: 11px 14px;
+  border-radius: 10px;
+  font-size: 14px;
+  color: #a6adc8;
+  cursor: pointer;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.admin-nav-item:hover {
+  background: rgba(255,255,255,0.08);
+  color: #cdd6f4;
+}
+
+.admin-nav-item.active {
+  background: #7c3aed;
+  color: white;
+  font-weight: 600;
+}
+
+.admin-nav-divider {
+  height: 1px;
+  background: rgba(255,255,255,0.1);
+  margin: 10px 0;
+}
+
+.admin-sidebar-footer {
+  border-top: 1px solid rgba(255,255,255,0.1);
+  padding-top: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.admin-user-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.admin-username {
+  font-size: 14px;
+  font-weight: 600;
+  color: #cdd6f4;
+  margin: 0;
+}
+
+.admin-role-badge {
+  background: #7c3aed;
+  color: white;
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 20px;
+  font-weight: 600;
+}
+
+.admin-btn-logout {
+  width: 100%;
+  background: rgba(220, 53, 69, 0.2);
+  border: 1px solid rgba(220, 53, 69, 0.4);
+  color: #f38ba8;
+  padding: 9px 14px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.admin-btn-logout:hover {
+  background: rgba(220, 53, 69, 0.4);
+  color: white;
+}
