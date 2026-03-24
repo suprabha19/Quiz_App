@@ -1,20 +1,20 @@
-import { useState, useRef, useEffect } from 'react';
-import { useAuth } from '../context/AuthContext';
-import { Search, User, ChevronDown } from 'lucide-react';
-import '../styles/TopBar.css';
+import { useState, useRef, useEffect } from "react";
+import { useAuth } from "../context/AuthContext";
+import { Search, User, ChevronDown } from "lucide-react";
+import "../styles/TopBar.css";
 
 const TopBar = ({ categories = [], onCategorySelect }) => {
   const { user } = useAuth();
   const [showUserDetails, setShowUserDetails] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
   const [showSearchResults, setShowSearchResults] = useState(false);
   const dropdownRef = useRef(null);
   const searchRef = useRef(null);
 
   // Filter categories based on search query
   const filteredCategories = searchQuery.trim()
-    ? categories.filter(category =>
-        category.toLowerCase().includes(searchQuery.toLowerCase())
+    ? categories.filter((category) =>
+        category.toLowerCase().includes(searchQuery.toLowerCase()),
       )
     : [];
 
@@ -28,8 +28,8 @@ const TopBar = ({ categories = [], onCategorySelect }) => {
       }
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   const handleSearchChange = (e) => {
@@ -41,7 +41,7 @@ const TopBar = ({ categories = [], onCategorySelect }) => {
     if (onCategorySelect) {
       onCategorySelect(category);
     }
-    setSearchQuery('');
+    setSearchQuery("");
     setShowSearchResults(false);
   };
 
@@ -57,14 +57,12 @@ const TopBar = ({ categories = [], onCategorySelect }) => {
           onFocus={() => searchQuery && setShowSearchResults(true)}
           className="search-input"
         />
-        
+
         {showSearchResults && searchQuery && (
           <div className="search-results-dropdown">
             {filteredCategories.length > 0 ? (
               <>
-                <div className="search-results-header">
-                  Quiz Categories
-                </div>
+                <div className="search-results-header">Quiz Categories</div>
                 {filteredCategories.map((category) => (
                   <button
                     key={category}
@@ -94,7 +92,10 @@ const TopBar = ({ categories = [], onCategorySelect }) => {
             <User size={20} />
           </div>
           <span className="user-name">{user.username}</span>
-          <ChevronDown size={16} className={`dropdown-arrow ${showUserDetails ? 'open' : ''}`} />
+          <ChevronDown
+            size={16}
+            className={`dropdown-arrow ${showUserDetails ? "open" : ""}`}
+          />
         </button>
 
         {showUserDetails && (
@@ -106,7 +107,7 @@ const TopBar = ({ categories = [], onCategorySelect }) => {
               <div className="user-details-info">
                 <p className="user-details-name">{user.username}</p>
                 <p className="user-details-role">
-                  {user.role === 'admin' ? 'Administrator' : 'User'}
+                  {user.role === "admin" ? "Administrator" : "User"}
                 </p>
               </div>
             </div>
@@ -117,12 +118,16 @@ const TopBar = ({ categories = [], onCategorySelect }) => {
               </div>
               <div className="user-detail-item">
                 <span className="detail-label">Email:</span>
-                <span className="detail-value">{user.email || 'Not provided'}</span>
+                <span className="detail-value">
+                  {user.email || "Not provided"}
+                </span>
               </div>
               <div className="user-detail-item">
                 <span className="detail-label">Member Since:</span>
                 <span className="detail-value">
-                  {user.createdAt ? new Date(user.createdAt).toLocaleDateString() : 'N/A'}
+                  {user.createdAt
+                    ? new Date(user.createdAt).toLocaleDateString()
+                    : "N/A"}
                 </span>
               </div>
             </div>

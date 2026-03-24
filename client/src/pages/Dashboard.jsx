@@ -320,7 +320,7 @@ const Dashboard = () => {
                 </div>
               </div>
               <div className="live-stat-card">
-                <span className="lst-icon">🏆</span>
+                <span className="lst-icon">🏆 </span>
                 <div>
                   <span className="lst-value">{stats.userAttempts}</span>
                   <span className="lst-label">Your Attempts</span>
