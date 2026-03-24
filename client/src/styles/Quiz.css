@@ -19,6 +19,10 @@
   font-size: 1rem;
   z-index: 1000;
   animation: slideDown 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
 }
 
 @keyframes slideDown {
@@ -72,7 +76,7 @@
 }
 
 .quiz-timer {
-  font-size: 1.4rem;
+  font-size: 1.1rem;
   font-weight: 700;
   color: #667eea;
   background: #f0f4ff;
@@ -80,6 +84,9 @@
   border-radius: 20px;
   border: 2px solid #667eea;
   transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .quiz-timer.timer-warning {
@@ -235,9 +242,11 @@
 }
 
 .feedback-icon {
-  font-size: 1.5rem;
-  font-weight: bold;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   margin-left: auto;
+  flex-shrink: 0;
 }
 
 .feedback-message {
@@ -247,6 +256,10 @@
   font-weight: 600;
   font-size: 1.1rem;
   text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
 }
 
 .correct-feedback {

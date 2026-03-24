@@ -10,49 +10,65 @@ import {
   Play,
   Trophy,
   Target,
-  Star,
   Clock,
-  ChevronRight,
   Award,
   BarChart2,
   BookOpen,
   TrendingUp,
   Medal,
   Zap,
-  Stars,
+  Flame,
+  Sprout,
+  Globe,
+  Palette,
+  Code2,
+  Server,
+  Database,
+  Coffee,
+  FileText,
+  FolderOpen,
+  Lightbulb,
+  Settings,
+  CheckCircle,
+  TrendingDown,
 } from "lucide-react";
 
 /* ── helpers ── */
-const CATEGORY_EMOJI = {
-  HTML: "🌐",
-  CSS: "🎨",
-  JavaScript: "⚡",
-  React: "⚛️",
-  "Node.js": "🟢",
-  Nodejs: "🟢",
-  MongoDB: "🍃",
-  Java: "☕",
-  Python: "🐍",
+const CATEGORY_ICON = {
+  HTML: Globe,
+  CSS: Palette,
+  JavaScript: Zap,
+  React: Code2,
+  "Node.js": Server,
+  Nodejs: Server,
+  MongoDB: Database,
+  Java: Coffee,
+  Python: Code2,
+};
+
+const CatIcon = ({ cat, size = 18 }) => {
+  const Icon = CATEGORY_ICON[cat] || BookOpen;
+  return <Icon size={size} />;
 };
 
 const DIFFICULTIES = [
   {
     label: "Basic",
-    emoji: "🌱",
+    Icon: Sprout,
     color: "#16a34a",
     bg: "#dcfce7",
     border: "#86efac",
   },
   {
     label: "Intermediate",
-    emoji: "⚡",
+    Icon: Zap,
     color: "#d97706",
     bg: "#fef3c7",
     border: "#fcd34d",
   },
   {
     label: "Hard",
-    emoji: "🔥",
+    Icon: Flame,
     color: "#dc2626",
     bg: "#fee2e2",
     border: "#fca5a5",
@@ -250,7 +266,7 @@ const Dashboard = () => {
     return (
       <div className="activity-row">
         <div className="ar-emoji">
-          {CATEGORY_EMOJI[result.category] || "📝"}
+          <CatIcon cat={result.category} size={16} />
         </div>
         <div className="ar-details">
           <span className="ar-cat">{result.category}</span>
@@ -313,35 +329,35 @@ const Dashboard = () => {
             </div>
             <div className="live-stats-cards">
               <div className="live-stat-card">
-                <span className="lst-icon">📝</span>
+                <span className="lst-icon"><FileText size={18} /></span>
                 <div>
                   <span className="lst-value">{stats.totalQuizzes}</span>
                   <span className="lst-label">Total Quizzes</span>
                 </div>
               </div>
               <div className="live-stat-card">
-                <span className="lst-icon">🏆 </span>
+                <span className="lst-icon"><Trophy size={18} /></span>
                 <div>
                   <span className="lst-value">{stats.userAttempts}</span>
                   <span className="lst-label">Your Attempts</span>
                 </div>
               </div>
               <div className="live-stat-card">
-                <span className="lst-icon">🎯</span>
+                <span className="lst-icon"><Target size={18} /></span>
                 <div>
                   <span className="lst-value">{stats.avgScore}%</span>
                   <span className="lst-label">Avg Score</span>
                 </div>
               </div>
               <div className="live-stat-card">
-                <span className="lst-icon">🥇</span>
+                <span className="lst-icon"><Medal size={18} /></span>
                 <div>
                   <span className="lst-value">{stats.badgeCount}</span>
                   <span className="lst-label">Badges Earned</span>
                 </div>
               </div>
               <div className="live-stat-card">
-                <span className="lst-icon">📂</span>
+                <span className="lst-icon"><FolderOpen size={18} /></span>
                 <div>
                   <span className="lst-value">{categories.length}</span>
                   <span className="lst-label">Categories</span>
@@ -354,10 +370,10 @@ const Dashboard = () => {
             <div className="user-topbar">
               <div className="user-topbar-left">
                 <h2 className="user-page-title">
-                  {activeTab === "overview" && "📊 Overview"}
-                  {activeTab === "quiz" && "📝 Take a Quiz"}
-                  {activeTab === "progress" && "📈 My Progress"}
-                  {activeTab === "activity" && "🕐 Activity Feed"}
+                  {activeTab === "overview" && <><BarChart2 size={20} /> Overview</>}
+                  {activeTab === "quiz" && <><FileText size={20} /> Take a Quiz</>}
+                  {activeTab === "progress" && <><TrendingUp size={20} /> My Progress</>}
+                  {activeTab === "activity" && <><Clock size={20} /> Activity Feed</>}
                 </h2>
               </div>
               <div className="user-topbar-right">
@@ -381,7 +397,7 @@ const Dashboard = () => {
                     className="btn-admin-jump"
                     onClick={() => navigate("/admin")}
                   >
-                    ⚙️ Admin Panel
+                    <Settings size={15} /> Admin Panel
                   </button>
                 )}
               </div>
@@ -395,44 +411,44 @@ const Dashboard = () => {
                   <div className="user-stats-grid">
                     {[
                       {
-                        icon: "📝",
+                        Icon: FileText,
                         value: stats.totalQuizzes,
                         label: "Available Quizzes",
                         accent: "purple",
                       },
                       {
-                        icon: "🏆",
+                        Icon: Trophy,
                         value: stats.userAttempts,
                         label: "Quiz Attempts",
                         accent: "blue",
                       },
                       {
-                        icon: "🎯",
+                        Icon: Target,
                         value: `${stats.avgScore}%`,
                         label: "Avg Score",
                         accent: "green",
                       },
                       {
-                        icon: "🥇",
+                        Icon: Medal,
                         value: stats.badgeCount,
                         label: "Badges Earned",
                         accent: "orange",
                       },
                       {
-                        icon: "📂",
+                        Icon: FolderOpen,
                         value: categories.length,
                         label: "Categories",
                         accent: "teal",
                       },
                       {
-                        icon: "🔥",
+                        Icon: Flame,
                         value: categoryStats.length,
                         label: "Explored Topics",
                         accent: "red",
                       },
-                    ].map(({ icon, value, label, accent }) => (
+                    ].map(({ Icon, value, label, accent }) => (
                       <div key={label} className={`user-stat-card ${accent}`}>
-                        <div className="stat-icon">{icon}</div>
+                        <div className="stat-icon"><Icon size={20} /></div>
                         <div>
                           <h3>{value}</h3>
                           <p>{label}</p>
@@ -445,14 +461,14 @@ const Dashboard = () => {
                   <div className="overview-welcome-card">
                     <div className="ow-left">
                       <p className="ow-hello">
-                        👋 Welcome back, <strong>{user.username}</strong>
+                        Welcome back, <strong>{user.username}</strong>
                       </p>
                       <h2 className="ow-headline">
                         {stats.avgScore >= 70
-                          ? "🌟 You're doing great!"
+                          ? "You're doing great!"
                           : stats.avgScore >= 40
-                            ? "💪 Keep pushing!"
-                            : "🚀 Let's level up!"}
+                            ? "Keep pushing!"
+                            : "Let's level up!"}
                       </h2>
                       <p className="ow-sub">
                         {stats.userAttempts > 0
@@ -470,13 +486,13 @@ const Dashboard = () => {
                           className="btn-ow-ghost"
                           onClick={() => navigate("/leaderboard")}
                         >
-                          🏆 Leaderboard
+                          <Trophy size={15} /> Leaderboard
                         </button>
                         <button
                           className="btn-ow-ghost"
                           onClick={() => navigate("/analytics")}
                         >
-                          📊 Analytics
+                          <BarChart2 size={15} /> Analytics
                         </button>
                       </div>
                     </div>
@@ -551,7 +567,7 @@ const Dashboard = () => {
                           .map(({ cat, attempts, avg }) => (
                             <div key={cat} className="cat-perf-chip">
                               <span className="cat-perf-emoji">
-                                {CATEGORY_EMOJI[cat] || "📚"}
+                                <CatIcon cat={cat} size={14} />
                               </span>
                               <span className="cat-perf-name">{cat}</span>
                               <span
@@ -572,13 +588,13 @@ const Dashboard = () => {
                   {/* Recommendations */}
                   {recommendations.length > 0 && (
                     <div className="overview-card">
-                      <h3>💡 Recommended for You</h3>
+                      <h3><Lightbulb size={16} /> Recommended for You</h3>
                       <div className="rec-grid">
                         {recommendations.map((rec, idx) => (
                           <div key={idx} className="rec-card">
                             <div className="rec-card-top">
                               <span className="rec-emoji">
-                                {CATEGORY_EMOJI[rec.category] || "📚"}
+                                <CatIcon cat={rec.category} size={20} />
                               </span>
                               <span
                                 className={`diff-badge diff-badge-${rec.difficulty.toLowerCase()}`}
@@ -614,7 +630,7 @@ const Dashboard = () => {
                   {allResults.length > 0 && (
                     <div className="overview-card">
                       <div className="overview-card-header">
-                        <h3>🕐 Recent Activity</h3>
+                        <h3><Clock size={16} /> Recent Activity</h3>
                         <button
                           className="btn-view-all"
                           onClick={() => setActiveTab("activity")}
@@ -638,7 +654,7 @@ const Dashboard = () => {
                   {!selectedCategory ? (
                     <>
                       <div className="quiz-tab-header">
-                        <h3>🗂️ Select a Category</h3>
+                        <h3><FolderOpen size={16} /> Select a Category</h3>
                         <p>Choose a technology to test your skills</p>
                       </div>
                       <div className="category-cards-grid">
@@ -662,7 +678,7 @@ const Dashboard = () => {
                               onClick={() => setSelectedCategory(cat)}
                             >
                               <span className="cat-card-emoji">
-                                {CATEGORY_EMOJI[cat] || "📚"}
+                                <CatIcon cat={cat} size={24} />
                               </span>
                               <span className="cat-card-name">{cat}</span>
                               {avg !== null ? (
@@ -684,7 +700,7 @@ const Dashboard = () => {
                     <div className="quiz-setup-panel">
                       <div className="quiz-setup-banner">
                         <span className="setup-emoji">
-                          {CATEGORY_EMOJI[selectedCategory] || "📚"}
+                          <CatIcon cat={selectedCategory} size={28} />
                         </span>
                         <div>
                           <h3>{selectedCategory}</h3>
@@ -704,7 +720,7 @@ const Dashboard = () => {
                       <p className="diff-pick-label">Choose Difficulty</p>
                       <div className="diff-buttons-row">
                         {DIFFICULTIES.map(
-                          ({ label, emoji, color, bg, border }) => (
+                          ({ label, Icon: DiffIcon, color, bg, border }) => (
                             <button
                               key={label}
                               className={`btn-diff-card ${selectedDifficulty === label ? "active" : ""}`}
@@ -719,7 +735,7 @@ const Dashboard = () => {
                               }
                               onClick={() => setSelectedDifficulty(label)}
                             >
-                              <span className="diff-card-emoji">{emoji}</span>
+                              <span className="diff-card-emoji"><DiffIcon size={18} /></span>
                               <span className="diff-card-label">{label}</span>
                             </button>
                           ),
@@ -737,7 +753,7 @@ const Dashboard = () => {
                                 {quizCount !== 1 ? "s" : ""} available
                               </>
                             ) : (
-                              "❌ No questions available for this selection"
+                              "No questions available for this selection"
                             )}
                           </div>
                           {quizCount > 0 && (
@@ -761,7 +777,7 @@ const Dashboard = () => {
                   {categoryStats.length === 0 ? (
                     <div className="overview-card">
                       <p className="no-data-msg">
-                        🎯 Complete some quizzes to see your progress!
+                        Complete some quizzes to see your progress!
                       </p>
                       <div style={{ textAlign: "center", marginTop: 16 }}>
                         <button
@@ -776,13 +792,13 @@ const Dashboard = () => {
                     <>
                       {/* Category bars */}
                       <div className="overview-card">
-                        <h3>📊 Performance by Category</h3>
+                        <h3><BarChart2 size={16} /> Performance by Category</h3>
                         <div className="cat-progress-list">
                           {categoryStats.map(({ cat, attempts, avg }) => (
                             <div key={cat} className="cat-progress-row">
                               <div className="cpr-left">
                                 <span className="cpr-emoji">
-                                  {CATEGORY_EMOJI[cat] || "📚"}
+                                  <CatIcon cat={cat} size={16} />
                                 </span>
                                 <div>
                                   <span className="cpr-name">{cat}</span>
@@ -816,7 +832,7 @@ const Dashboard = () => {
 
                       {/* Score history */}
                       <div className="overview-card">
-                        <h3>📈 Recent Scores (Last 10)</h3>
+                        <h3><TrendingUp size={16} /> Recent Scores (Last 10)</h3>
                         <div className="score-history-list">
                           {allResults.slice(0, 10).map((r, idx) => {
                             const pct =
@@ -827,7 +843,7 @@ const Dashboard = () => {
                               <div key={idx} className="score-history-row">
                                 <span className="shr-idx">#{idx + 1}</span>
                                 <span className="shr-emoji">
-                                  {CATEGORY_EMOJI[r.category] || "📚"}
+                                  <CatIcon cat={r.category} size={15} />
                                 </span>
                                 <div className="shr-info">
                                   <span className="shr-cat">{r.category}</span>
@@ -869,10 +885,10 @@ const Dashboard = () => {
                       {/* Summary cards */}
                       <div className="prog-summary-row">
                         <div className="overview-card">
-                          <h3>🏆 Best Category</h3>
+                          <h3><Trophy size={16} /> Best Category</h3>
                           <div className="summary-stat-card">
                             <span className="ss-emoji">
-                              {CATEGORY_EMOJI[categoryStats[0].cat] || "📚"}
+                              <CatIcon cat={categoryStats[0].cat} size={24} />
                             </span>
                             <p className="ss-name">{categoryStats[0].cat}</p>
                             <p
@@ -887,12 +903,10 @@ const Dashboard = () => {
                         </div>
                         {categoryStats.length > 1 && (
                           <div className="overview-card">
-                            <h3>📉 Needs Work</h3>
+                            <h3><TrendingDown size={16} /> Needs Work</h3>
                             <div className="summary-stat-card">
                               <span className="ss-emoji">
-                                {CATEGORY_EMOJI[
-                                  categoryStats[categoryStats.length - 1].cat
-                                ] || "📚"}
+                                <CatIcon cat={categoryStats[categoryStats.length - 1].cat} size={24} />
                               </span>
                               <p className="ss-name">
                                 {categoryStats[categoryStats.length - 1].cat}
@@ -911,9 +925,9 @@ const Dashboard = () => {
                           </div>
                         )}
                         <div className="overview-card">
-                          <h3>📊 Total Attempts</h3>
+                          <h3><BarChart2 size={16} /> Total Attempts</h3>
                           <div className="summary-stat-card">
-                            <span className="ss-emoji">🎯</span>
+                            <span className="ss-emoji"><Target size={24} /></span>
                             <p
                               className="ss-score"
                               style={{ color: "#7c3aed" }}
@@ -933,7 +947,7 @@ const Dashboard = () => {
               {activeTab === "activity" && (
                 <div className="overview-card">
                   <div className="overview-card-header">
-                    <h3>🕐 All Activity</h3>
+                    <h3><Clock size={16} /> All Activity</h3>
                     <button
                       className="btn-view-all"
                       onClick={() => navigate("/history")}

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { quizAPI, authAPI, resultAPI } from '../services/api';
 import { useAuth } from '../context/AuthContext';
 import AdminSidebar from '../components/AdminSidebar';
-import { RefreshCw, Search, Download } from 'lucide-react';
+import { RefreshCw, Search, Download, FileText, Users, BarChart2, Target, FolderOpen, ShieldCheck } from 'lucide-react';
 import '../styles/Admin.css';
 import '../styles/AdminSidebar.css';
 
@@ -199,42 +199,42 @@ const AdminDashboard = () => {
             <>
               <div className="admin-stats-grid">
                 <div className="admin-stat-card purple">
-                  <div className="stat-icon">📝</div>
+                  <div className="stat-icon"><FileText size={20} /></div>
                   <div>
                     <h3>{quizzes.length}</h3>
                     <p>Total Quizzes</p>
                   </div>
                 </div>
                 <div className="admin-stat-card blue">
-                  <div className="stat-icon">👥</div>
+                  <div className="stat-icon"><Users size={20} /></div>
                   <div>
                     <h3>{users.length}</h3>
                     <p>Total Users</p>
                   </div>
                 </div>
                 <div className="admin-stat-card green">
-                  <div className="stat-icon">📊</div>
+                  <div className="stat-icon"><BarChart2 size={20} /></div>
                   <div>
                     <h3>{results.length}</h3>
                     <p>Quiz Attempts</p>
                   </div>
                 </div>
                 <div className="admin-stat-card orange">
-                  <div className="stat-icon">🎯</div>
+                  <div className="stat-icon"><Target size={20} /></div>
                   <div>
                     <h3>{avgScore}%</h3>
                     <p>Avg Score</p>
                   </div>
                 </div>
                 <div className="admin-stat-card teal">
-                  <div className="stat-icon">📂</div>
+                  <div className="stat-icon"><FolderOpen size={20} /></div>
                   <div>
                     <h3>{categories.length - 1}</h3>
                     <p>Categories</p>
                   </div>
                 </div>
                 <div className="admin-stat-card red">
-                  <div className="stat-icon">🔑</div>
+                  <div className="stat-icon"><ShieldCheck size={20} /></div>
                   <div>
                     <h3>{users.filter(u => u.role === 'admin').length}</h3>
                     <p>Admins</p>

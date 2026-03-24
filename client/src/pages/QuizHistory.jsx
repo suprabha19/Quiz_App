@@ -5,13 +5,14 @@ import Sidebar from '../components/Sidebar';
 import TopBar from '../components/TopBar';
 import { quizAPI } from '../services/api';
 import '../styles/QuizHistory.css';
+import { Target, Star, Award, Trophy, BookOpen, Medal, Sparkles, ThumbsUp, Dumbbell } from 'lucide-react';
 
 const BADGE_INFO = {
-  first_quiz:       { icon: '🎯', label: 'First Quiz',       desc: 'Completed your first quiz' },
-  perfect_score:    { icon: '💯', label: 'Perfect Score',    desc: 'Got 100% on a quiz' },
-  top_scorer:       { icon: '⭐', label: 'Star Performer',   desc: 'Scored 90%+ on a quiz' },
-  quiz_veteran:     { icon: '🏆', label: 'Quiz Veteran',     desc: 'Completed 10 quizzes' },
-  knowledge_seeker: { icon: '🌟', label: 'Knowledge Seeker', desc: 'Explored 3+ categories' }
+  first_quiz:       { Icon: Target,   label: 'First Quiz',       desc: 'Completed your first quiz' },
+  perfect_score:    { Icon: Star,     label: 'Perfect Score',    desc: 'Got 100% on a quiz' },
+  top_scorer:       { Icon: Award,    label: 'Star Performer',   desc: 'Scored 90%+ on a quiz' },
+  quiz_veteran:     { Icon: Trophy,   label: 'Quiz Veteran',     desc: 'Completed 10 quizzes' },
+  knowledge_seeker: { Icon: BookOpen, label: 'Knowledge Seeker', desc: 'Explored 3+ categories' }
 };
 
 const QuizHistory = () => {
@@ -88,22 +89,25 @@ const QuizHistory = () => {
 
         {badges.length > 0 && (
           <div className="history-badges-section">
-            <h2>🏅 My Achievements</h2>
+            <h2><Medal size={20} /> My Achievements</h2>
             <div className="history-badges-grid">
-              {badges.map(badge => (
-                <div key={badge} className="history-badge-card">
-                  <span className="hb-icon">{BADGE_INFO[badge]?.icon}</span>
-                  <span className="hb-label">{BADGE_INFO[badge]?.label}</span>
-                  <span className="hb-desc">{BADGE_INFO[badge]?.desc}</span>
-                </div>
-              ))}
+              {badges.map(badge => {
+                const BadgeIcon = BADGE_INFO[badge]?.Icon || Award;
+                return (
+                  <div key={badge} className="history-badge-card">
+                    <span className="hb-icon"><BadgeIcon size={28} /></span>
+                    <span className="hb-label">{BADGE_INFO[badge]?.label}</span>
+                    <span className="hb-desc">{BADGE_INFO[badge]?.desc}</span>
+                  </div>
+                );
+              })}
             </div>
           </div>
         )}
 
         {results.length === 0 ? (
           <div className="history-empty">
-            <p>🎯 No quiz attempts yet. Start your first quiz!</p>
+            <p>No quiz attempts yet. Start your first quiz!</p>
             <button className="btn-start-quiz" onClick={() => navigate('/dashboard')}>
               Go to Dashboard
             </button>
@@ -126,9 +130,9 @@ const QuizHistory = () => {
                       <span className="history-fraction">{result.score}/{result.totalQuestions}</span>
                     </div>
                     <div className={`history-badge ${perfClass}`}>
-                      {percentage >= 90 ? '🎉 Excellent' :
-                       percentage >= 70 ? '👏 Great' :
-                       percentage >= 50 ? '👍 Good' : '💪 Keep Going'}
+                      {percentage >= 90 ? <><Sparkles size={14} /> Excellent</> :
+                       percentage >= 70 ? <><ThumbsUp size={14} /> Great</> :
+                       percentage >= 50 ? <><ThumbsUp size={14} /> Good</> : <><Dumbbell size={14} /> Keep Going</>}
                     </div>
                   </div>
                 </div>

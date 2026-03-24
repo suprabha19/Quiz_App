@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { quizAPI, resultAPI } from '../services/api';
 import '../styles/Quiz.css';
+import { AlertTriangle, Clock, Check, X } from 'lucide-react';
 
 const QUESTION_TIME = 30;
 const DIFF_ORDER = ['Basic', 'Intermediate', 'Hard'];
@@ -270,7 +271,7 @@ const Quiz = () => {
     <div className="quiz-container">
       {showWarning && (
         <div className="anticheat-warning">
-          ⚠️ Warning: Switching tabs is not allowed! One more violation will auto-submit your quiz.
+          <AlertTriangle size={16} /> Warning: Switching tabs is not allowed! One more violation will auto-submit your quiz.
         </div>
       )}
 
@@ -283,7 +284,7 @@ const Quiz = () => {
             </span>
           </div>
           <div className={`quiz-timer ${timeLeft <= 10 ? 'timer-warning' : ''}`}>
-            ⏱ {timeLeft}s
+            <Clock size={16} /> {timeLeft}s
           </div>
         </div>
         <div className="quiz-progress">
@@ -313,8 +314,8 @@ const Quiz = () => {
               >
                 <span className="option-letter">{String.fromCharCode(65 + index)}</span>
                 <span className="option-text">{option}</span>
-                {showCorrect && <span className="feedback-icon">✓</span>}
-                {showIncorrect && <span className="feedback-icon">✗</span>}
+                {showCorrect && <span className="feedback-icon"><Check size={18} /></span>}
+                {showIncorrect && <span className="feedback-icon"><X size={18} /></span>}
               </button>
             );
           })}
@@ -323,10 +324,10 @@ const Quiz = () => {
         {showFeedback && (
           <div className={`feedback-message ${selectedAnswer === currentQuestion.correctAnswer ? 'correct-feedback' : 'incorrect-feedback'}`}>
             {selectedAnswer === null
-              ? `⏱ Time's up! The correct answer is ${String.fromCharCode(65 + currentQuestion.correctAnswer)}.`
+              ? <><Clock size={16} /> Time&apos;s up! The correct answer is {String.fromCharCode(65 + currentQuestion.correctAnswer)}.</>
               : selectedAnswer === currentQuestion.correctAnswer
-                ? '✓ Correct! Well done!'
-                : `✗ Incorrect. The correct answer is ${String.fromCharCode(65 + currentQuestion.correctAnswer)}.`}
+                ? <><Check size={16} /> Correct! Well done!</>
+                : <><X size={16} /> Incorrect. The correct answer is {String.fromCharCode(65 + currentQuestion.correctAnswer)}.</>}
           </div>
         )}
 

@@ -3,13 +3,18 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import Certificate from '../components/Certificate';
 import '../styles/Results.css';
+import {
+  Target, Star, Award, Trophy, BookOpen,
+  Sparkles, ThumbsUp, Dumbbell,
+  Check, X, ChevronUp, ChevronDown, PartyPopper
+} from 'lucide-react';
 
 const BADGE_INFO = {
-  first_quiz:       { icon: '🎯', label: 'First Quiz',       desc: 'Completed your first quiz' },
-  perfect_score:    { icon: '💯', label: 'Perfect Score',    desc: 'Got 100% on a quiz' },
-  top_scorer:       { icon: '⭐', label: 'Star Performer',   desc: 'Scored 90%+ on a quiz' },
-  quiz_veteran:     { icon: '🏆', label: 'Quiz Veteran',     desc: 'Completed 10 quizzes' },
-  knowledge_seeker: { icon: '🌟', label: 'Knowledge Seeker', desc: 'Explored 3+ categories' }
+  first_quiz:       { Icon: Target,   label: 'First Quiz',       desc: 'Completed your first quiz' },
+  perfect_score:    { Icon: Star,     label: 'Perfect Score',    desc: 'Got 100% on a quiz' },
+  top_scorer:       { Icon: Award,    label: 'Star Performer',   desc: 'Scored 90%+ on a quiz' },
+  quiz_veteran:     { Icon: Trophy,   label: 'Quiz Veteran',     desc: 'Completed 10 quizzes' },
+  knowledge_seeker: { Icon: BookOpen, label: 'Knowledge Seeker', desc: 'Explored 3+ categories' }
 };
 
 const Results = () => {
@@ -27,10 +32,10 @@ const Results = () => {
   const percentage = Math.round((score / totalQuestions) * 100);
 
   const getPerformanceMessage = () => {
-    if (percentage >= 90) return { text: 'Excellent!', emoji: '🎉', class: 'excellent' };
-    if (percentage >= 70) return { text: 'Great Job!', emoji: '👏', class: 'great' };
-    if (percentage >= 50) return { text: 'Good Effort!', emoji: '👍', class: 'good' };
-    return { text: 'Keep Practicing!', emoji: '💪', class: 'needs-improvement' };
+    if (percentage >= 90) return { text: 'Excellent!', Icon: Sparkles, class: 'excellent' };
+    if (percentage >= 70) return { text: 'Great Job!', Icon: ThumbsUp, class: 'great' };
+    if (percentage >= 50) return { text: 'Good Effort!', Icon: ThumbsUp, class: 'good' };
+    return { text: 'Keep Practicing!', Icon: Dumbbell, class: 'needs-improvement' };
   };
 
   const performance = getPerformanceMessage();
@@ -40,7 +45,7 @@ const Results = () => {
     <div className="results-container">
       <div className="results-card">
         <div className={`performance-badge ${performance.class}`}>
-          <span className="performance-emoji">{performance.emoji}</span>
+          <span className="performance-emoji"><performance.Icon size={40} /></span>
           <h2>{performance.text}</h2>
         </div>
 
@@ -60,15 +65,18 @@ const Results = () => {
 
         {newBadges.length > 0 && (
           <div className="new-badges-section">
-            <h3>🎉 Achievement{newBadges.length > 1 ? 's' : ''} Unlocked!</h3>
+            <h3><PartyPopper size={16} /> Achievement{newBadges.length > 1 ? 's' : ''} Unlocked!</h3>
             <div className="badges-grid">
-              {newBadges.map(badge => (
-                <div key={badge} className="badge-card">
-                  <span className="badge-icon">{BADGE_INFO[badge]?.icon}</span>
-                  <span className="badge-name">{BADGE_INFO[badge]?.label}</span>
-                  <span className="badge-desc">{BADGE_INFO[badge]?.desc}</span>
-                </div>
-              ))}
+              {newBadges.map(badge => {
+                const BadgeIcon = BADGE_INFO[badge]?.Icon || Award;
+                return (
+                  <div key={badge} className="badge-card">
+                    <span className="badge-icon"><BadgeIcon size={28} /></span>
+                    <span className="badge-name">{BADGE_INFO[badge]?.label}</span>
+                    <span className="badge-desc">{BADGE_INFO[badge]?.desc}</span>
+                  </div>
+                );
+              })}
             </div>
           </div>
         )}
@@ -79,7 +87,7 @@ const Results = () => {
               className="btn-secondary"
               onClick={() => setShowReview(v => !v)}
             >
-              {showReview ? '▲ Hide Review' : '▼ Review Answers'}
+              {showReview ? <><ChevronUp size={16} /> Hide Review</> : <><ChevronDown size={16} /> Review Answers</>}
             </button>
           </div>
         )}
@@ -108,8 +116,8 @@ const Results = () => {
                       >
                         <span className="review-opt-letter">{String.fromCharCode(65 + oidx)}</span>
                         {opt}
-                        {isCorrectOpt && <span className="review-opt-icon"> ✓</span>}
-                        {isWrongSelected && <span className="review-opt-icon"> ✗</span>}
+                        {isCorrectOpt && <span className="review-opt-icon"><Check size={14} /></span>}
+                        {isWrongSelected && <span className="review-opt-icon"><X size={14} /></span>}
                       </div>
                     );
                   })}

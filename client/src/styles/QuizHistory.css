@@ -39,7 +39,14 @@
 }
 
 .hb-icon {
-  font-size: 2rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 12px;
+  background: rgba(124, 58, 237, 0.12);
+  color: #7c3aed;
 }
 
 .hb-label {
@@ -146,6 +153,9 @@
   font-weight: 600;
   padding: 4px 10px;
   border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
 }
 
 .history-badge.excellent        { background: #d4edda; color: #155724; }
