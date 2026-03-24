@@ -21,8 +21,14 @@
 }
 
 .performance-emoji {
-  font-size: 4rem;
-  display: block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 72px;
+  height: 72px;
+  border-radius: 16px;
+  background: rgba(124, 58, 237, 0.12);
+  color: #7c3aed;
   margin-bottom: 15px;
 }
 
@@ -141,7 +147,14 @@
 }
 
 .badge-icon {
-  font-size: 2rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 12px;
+  background: rgba(124, 58, 237, 0.12);
+  color: #7c3aed;
 }
 
 .badge-name {
@@ -259,7 +272,9 @@
 
 .review-opt-icon {
   margin-left: auto;
-  font-weight: bold;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* ── Responsive ── */
@@ -269,7 +284,8 @@
   }
 
   .performance-emoji {
-    font-size: 3rem;
+    width: 56px;
+    height: 56px;
   }
 
   .performance-badge h2 {

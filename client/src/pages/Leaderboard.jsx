@@ -5,8 +5,7 @@ import { useAuth } from '../context/AuthContext';
 import Sidebar from '../components/Sidebar';
 import TopBar from '../components/TopBar';
 import '../styles/Leaderboard.css';
-
-const MEDALS = ['🥇', '🥈', '🥉'];
+import { Trophy, Target, Medal } from 'lucide-react';
 
 const Leaderboard = () => {
   const [leaderboard, setLeaderboard] = useState([]);
@@ -55,7 +54,7 @@ const Leaderboard = () => {
         
         <div className="main-content-body">
           <div className="dashboard-header">
-            <h1>🏆 Leaderboard</h1>
+            <h1><Trophy size={24} /> Leaderboard</h1>
             <button className="btn-primary" onClick={() => navigate('/dashboard')}>
               Take a Quiz
             </button>
@@ -63,7 +62,7 @@ const Leaderboard = () => {
 
         {leaderboard.length === 0 ? (
           <div className="lb-empty">
-            <p>🎯 No scores yet. Be the first to top the leaderboard!</p>
+            <p>No scores yet. Be the first to top the leaderboard!</p>
             <button className="btn-start-quiz" onClick={() => navigate('/dashboard')}>
               Start Quiz
             </button>
@@ -87,7 +86,10 @@ const Leaderboard = () => {
                     className={`lb-row ${entry.username === user?.username ? 'lb-row-me' : ''} ${index < 3 ? 'lb-row-top' : ''}`}
                   >
                     <td className="lb-rank">
-                      {index < 3 ? MEDALS[index] : `#${index + 1}`}
+                      {index === 0 ? <Medal size={20} className="lb-medal lb-gold" /> :
+                       index === 1 ? <Medal size={20} className="lb-medal lb-silver" /> :
+                       index === 2 ? <Medal size={20} className="lb-medal lb-bronze" /> :
+                       `#${index + 1}`}
                     </td>
                     <td className="lb-username">
                       {entry.username}

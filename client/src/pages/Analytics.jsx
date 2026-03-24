@@ -4,6 +4,7 @@ import { resultAPI, quizAPI } from '../services/api';
 import Sidebar from '../components/Sidebar';
 import TopBar from '../components/TopBar';
 import '../styles/Analytics.css';
+import { BarChart2, CheckCircle, TrendingUp, AlertTriangle } from 'lucide-react';
 
 const Analytics = () => {
   const [analytics, setAnalytics] = useState(null);
@@ -58,7 +59,7 @@ const Analytics = () => {
         
         <div className="main-content-body">
           <div className="dashboard-header">
-            <h1>📊 My Analytics</h1>
+            <h1><BarChart2 size={24} /> My Analytics</h1>
             <button className="btn-primary" onClick={() => navigate('/dashboard')}>
               Take a Quiz
             </button>
@@ -66,7 +67,7 @@ const Analytics = () => {
 
         {analytics.totalQuizzes === 0 ? (
           <div className="analytics-empty">
-            <p>📊 No quiz data yet. Complete some quizzes to see your analytics!</p>
+            <p>No quiz data yet. Complete some quizzes to see your analytics!</p>
             <button className="btn-start-quiz" onClick={() => navigate('/dashboard')}>
               Start a Quiz
             </button>
@@ -121,11 +122,11 @@ const Analytics = () => {
                         <td className={getScoreClass(row.bestScore)}>{row.bestScore}%</td>
                         <td>
                           {row.avgScore >= 70 ? (
-                            <span className="status-badge status-strong">✓ Strong</span>
+                            <span className="status-badge status-strong"><CheckCircle size={13} /> Strong</span>
                           ) : row.avgScore >= 40 ? (
-                            <span className="status-badge status-improving">↑ Improving</span>
+                            <span className="status-badge status-improving"><TrendingUp size={13} /> Improving</span>
                           ) : (
-                            <span className="status-badge status-weak">⚠ Needs Work</span>
+                            <span className="status-badge status-weak"><AlertTriangle size={13} /> Needs Work</span>
                           )}
                         </td>
                       </tr>

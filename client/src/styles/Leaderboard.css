@@ -46,10 +46,15 @@
 }
 
 .lb-rank {
-  font-size: 1.3rem;
+  font-size: 1rem;
   text-align: center;
   width: 60px;
 }
+
+.lb-medal { display: inline-block; }
+.lb-gold   { color: #d4af37; }
+.lb-silver { color: #a8a9ad; }
+.lb-bronze { color: #cd7f32; }
 
 .lb-username {
   font-weight: 600;
